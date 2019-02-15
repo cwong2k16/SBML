@@ -1,27 +1,38 @@
 import re
 
 variable = input("Enter a number: ")
-
-# float will always have a "." or "e" in it
-# check for float first
+#res = (re.match("^[-]?[0]{2,}[0-9]*$", first))
 def valid_number():
-    if("." in variable):
-        arr = variable.split(".")
-        if(len(arr)>2):
-            return "None"
-        else:
-            first = arr[0]
-            second = arr[1]
 
-            # if res matches leading zeros, return None
-            res = (re.match("^[-]?[0]{2,}[0-9]*$", first))
-            if(res != None):
-                return "None"
-            res = re.match("^[-]?[0-9]*$", first)
-            if(res == None):
-                return "None"
-            return "good"
-        
+    # checks if there are leading zeroes
+    if(re.match("^[-]?[0]{2,}", variable)):
+        return "None"
+    
+    # checks if valid base 10 integer
+    if(re.match("^[-]?[0-9]*$", variable)):
+        return "int"
+
+    # matches a binary string, and checks for leading zeroes
+    if(re.match("^[-]?[0][bB][0]{2,}", variable)):
+        return "None"
+    if(re.match("^[-]?[0][bB][01]*$", variable)):
+        return "int"
+
+    # matches an octal string, and checks for leading zeroes
+    if(re.match("^[-]?[0][oO][0]{2,}", variable)):
+        return "None"
+    if(re.match("^[-]?[0][oO][0-7]*$", variable)):
+        return "int"
+
+    # matches a hexadecimal string, and checks for leading zeroes
+    if(re.match("^[-]?[0][xX][0]{2,}", variable)):
+        return "None"
+    if(re.match("^[-]?[0][xX][A-Fa-f0-9]*$", variable)):
+        return "int"
+
+    # general case for float first, then prune it after
+    # res = re.match("^[-]?[0-9]*[.]?[0-9]*[e]?[-]?[1-9]*$", variable)
+    # return res
 print(valid_number())
 
 
