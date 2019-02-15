@@ -4,10 +4,9 @@ variable = input("Enter a number: ")
 #res = (re.match("^[-]?[0]{2,}[0-9]*$", first))
 def valid_number():
 
-    # checks if there are leading zeroes
+    # matches a decimal string, and checks for leading zeroes
     if(re.match("^[-]?[0]{2,}", variable)):
         return "None"
-    
     # checks if valid base 10 integer
     if(re.match("^[-]?[0-9]*$", variable)):
         return "int"
@@ -31,8 +30,9 @@ def valid_number():
         return "int"
 
     # general case for float first, then prune it after
-    # res = re.match("^[-]?[0-9]*[.]?[0-9]*[e]?[-]?[1-9]*$", variable)
-    # return res
+    if(re.match("^[-]?[0-9]*[.]?[0-9]*[e]?[-]?[1-9]*$", variable)):
+        return "float"
+    return "None"
 print(valid_number())
 
 
