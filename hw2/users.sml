@@ -1,0 +1,1 @@
+fun authorizedRoles(User, ListUserRoleTuples, ListRoleRoleTuples) = 
