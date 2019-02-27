@@ -1,7 +1,7 @@
-fun authorizedRoles(User, L : (''a * ''a) list) = if L = [] then []
+fun authorizedRolesHelper(User, L : (''a * ''a) list) = if L = [] then []
 else if User = #1(hd(L)) then #2(hd(L))::authorizedRoles(User, tl(L))
 else authorizedRoles(User, tl(L));
 
-val lst = [("a","president"), ("a","citizen"), ("b","agf"), ("b", "dsa"), ("c","asdsd"), ("d","asdsad")];
+fun authorizedRolesHelper2(User, L : (''a * ''a) list, RR : (''a * ''a) list)
 
-authorizedRoles("a", lst);
+fun authorizedRoles(User, UR : (''a * ''a) list, RR : (''a * ''a) list) = if L = [] then []
