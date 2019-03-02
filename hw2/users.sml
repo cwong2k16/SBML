@@ -36,4 +36,6 @@ else addMember2(L, tl(RR));
 
 fun authorizedPermissions(User, L, RR : (''a * ''a) list) = 
 if L = [] then []
-else addMember2(L, RR) @ authorizedPermissions(User, tl(L), RR);
+else removedupl(addMember2(L, RR) @ authorizedPermissions(User, tl(L), RR));
+
+authorizedPermissions(1, [2,3,4], [(6,9), (1,2), (1,3), (2,2), (3,5), (4,6)]); 
