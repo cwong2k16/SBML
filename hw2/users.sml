@@ -29,4 +29,11 @@ else authorizedRolesHelper(User, tl(L), RR);
 fun authorizedRoles(User, L: (''a * ''a) list, RR : (''a * ''a) list) = 
 removedupl(authorizedRolesHelper2(User, authorizedRolesHelper(User, L, RR), RR));
 
-val a = authorizedRoles(1, [(1,2), (1,3)], [(4,5),(3,4),(2,6),(1,7)]);
+fun addMember2(L, RR : (''a * ''a) list) = 
+if RR = [] then []
+else if #1(hd(RR)) = hd(L) then #2(hd(RR)) :: addMember2(L, tl(RR))
+else addMember2(L, tl(RR));
+
+fun authorizedPermissions(User, L, RR : (''a * ''a) list) = 
+if L = [] then []
+else addMember2(L, RR) @ authorizedPermissions(User, tl(L), RR);
