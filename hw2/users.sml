@@ -1,8 +1,3 @@
-fun member(X, L) = 
-if L=[] then false
-else if X=hd(L) then true
-else member(X, tl(L));
-
 fun remove(x, L) = 
 if L = [] then []
 else if x=hd(L) then remove(x, tl(L))
@@ -38,4 +33,4 @@ fun authorizedPermissions(User, L, RR : (''a * ''a) list) =
 if L = [] then []
 else removedupl(addMember2(L, RR) @ authorizedPermissions(User, tl(L), RR));
 
-authorizedPermissions(1, [2,3,4], [(6,9), (1,2), (1,3), (2,2), (3,5), (4,6)]); 
+authorizedRoles(1, [(1,2),(1,3)], [(2,4),(4,5),(5,6),(4,3)]);
