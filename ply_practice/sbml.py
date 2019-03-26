@@ -18,14 +18,6 @@ class NumberNode(Node):
     def evaluate(self):
         return self.value
 
-# class PrintNode(Node):
-#     def __init__(self, v):
-#         self.value = v
-
-#     def execute(self):
-#         self.value = self.value.evaluate()
-#         print(self.value)
-
 class BopNode(Node):
     def __init__(self, op, v1, v2):
         self.v1 = v1
@@ -81,12 +73,6 @@ precedence = (
     ('left','PLUS','MINUS'),
     ('left','TIMES','DIVIDE')
     )
-
-# def p_print_smt(t):
-#     """
-#     print_smt : PRINT LPAREN expression RPAREN
-#     """
-#     t[0] = PrintNode(t[3])
 
 def p_statement_expr(t):
     'statement : expression'
