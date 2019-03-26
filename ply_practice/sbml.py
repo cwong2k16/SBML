@@ -18,13 +18,13 @@ class NumberNode(Node):
     def evaluate(self):
         return self.value
 
-class PrintNode(Node):
-    def __init__(self, v):
-        self.value = v
+# class PrintNode(Node):
+#     def __init__(self, v):
+#         self.value = v
 
-    def execute(self):
-        self.value = self.value.evaluate()
-        print(self.value)
+#     def execute(self):
+#         self.value = self.value.evaluate()
+#         print(self.value)
 
 class BopNode(Node):
     def __init__(self, op, v1, v2):
@@ -43,13 +43,13 @@ class BopNode(Node):
             return self.v1.evaluate() / self.v2.evaluate()
 
 tokens = (
-    'PRINT','LPAREN', 'RPAREN',
+    'LPAREN', 'RPAREN',
     'NUMBER',
     'PLUS','MINUS','TIMES','DIVIDE'
     )
 
 # Tokens
-t_PRINT    = 'print'
+# t_PRINT    = 'print'
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
 t_PLUS    = r'\+'
@@ -82,11 +82,15 @@ precedence = (
     ('left','TIMES','DIVIDE')
     )
 
-def p_print_smt(t):
-    """
-    print_smt : PRINT LPAREN expression RPAREN
-    """
-    t[0] = PrintNode(t[3])
+# def p_print_smt(t):
+#     """
+#     print_smt : PRINT LPAREN expression RPAREN
+#     """
+#     t[0] = PrintNode(t[3])
+
+def p_statement_expr(t):
+    'statement : expression'
+    print(t[1].evaluate())
 
 def p_expression_binop(t):
     '''expression : expression PLUS factor
@@ -98,6 +102,10 @@ def p_expression_binop(t):
 def p_expression_factor(t):
     '''expression : factor'''
     t[0] = t[1]
+
+def p_expression_group(t):
+    'expression : LPAREN expression RPAREN'
+    t[0] = t[2]
 
 def p_factor_number(t):
     'factor : NUMBER'
@@ -114,18 +122,7 @@ import sys
 if (len(sys.argv) != 2):
     sys.exit("invalid arguments")
 fd = open(sys.argv[1], 'r')
-code = ""
 
 for line in fd:
-    code += line.strip()
-
-try:
-    lex.input(code)
-    while True:
-        token = lex.token()
-        if not token: break
-        print(token)
-    ast = yacc.parse(code)
-    ast.execute()
-except Exception:
-    print("ERROR")
+    code = line.strip()
+    yacc.parse(code)
