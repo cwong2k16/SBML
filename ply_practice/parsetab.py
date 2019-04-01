@@ -6,7 +6,7 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDEDIVIDE LPAREN MINUS NUMBER PLUS RPAREN TIMESstatement : expressionexpression : expression PLUS factor\n                  | expression MINUS factor\n                  | expression TIMES factor\n                  | expression DIVIDE factorexpression : factorexpression : LPAREN expression RPARENfactor : NUMBER'
+_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDEDIVIDE LPAREN MINUS NUMBER PLUS RPAREN SEMI TIMESstatement : expressionexpression : expression PLUS factor\n                  | expression MINUS factor\n                  | expression TIMES factor\n                  | expression DIVIDE factorexpression : factorexpression : LPAREN expression RPARENfactor : NUMBER'
     
 _lr_action_items = {'LPAREN':([0,4,],[4,4,]),'NUMBER':([0,4,6,7,8,9,],[5,5,5,5,5,5,]),'$end':([1,2,3,5,11,12,13,14,15,],[0,-1,-6,-8,-2,-3,-4,-5,-7,]),'PLUS':([2,3,5,10,11,12,13,14,15,],[6,-6,-8,6,-2,-3,-4,-5,-7,]),'MINUS':([2,3,5,10,11,12,13,14,15,],[7,-6,-8,7,-2,-3,-4,-5,-7,]),'TIMES':([2,3,5,10,11,12,13,14,15,],[8,-6,-8,8,-2,-3,-4,-5,-7,]),'DIVIDE':([2,3,5,10,11,12,13,14,15,],[9,-6,-8,9,-2,-3,-4,-5,-7,]),'RPAREN':([3,5,10,11,12,13,14,15,],[-6,-8,15,-2,-3,-4,-5,-7,]),}
 
@@ -27,12 +27,12 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> statement","S'",1,None,None,None),
-  ('statement -> expression','statement',1,'p_statement_expr','ply_calc_example_nodes.py',92),
-  ('expression -> expression PLUS factor','expression',3,'p_expression_binop','ply_calc_example_nodes.py',96),
-  ('expression -> expression MINUS factor','expression',3,'p_expression_binop','ply_calc_example_nodes.py',97),
-  ('expression -> expression TIMES factor','expression',3,'p_expression_binop','ply_calc_example_nodes.py',98),
-  ('expression -> expression DIVIDE factor','expression',3,'p_expression_binop','ply_calc_example_nodes.py',99),
-  ('expression -> factor','expression',1,'p_expression_factor','ply_calc_example_nodes.py',103),
-  ('expression -> LPAREN expression RPAREN','expression',3,'p_expression_group','ply_calc_example_nodes.py',107),
-  ('factor -> NUMBER','factor',1,'p_factor_number','ply_calc_example_nodes.py',111),
+  ('statement -> expression','statement',1,'p_statement_expr','sbml.py',79),
+  ('expression -> expression PLUS factor','expression',3,'p_expression_binop','sbml.py',83),
+  ('expression -> expression MINUS factor','expression',3,'p_expression_binop','sbml.py',84),
+  ('expression -> expression TIMES factor','expression',3,'p_expression_binop','sbml.py',85),
+  ('expression -> expression DIVIDE factor','expression',3,'p_expression_binop','sbml.py',86),
+  ('expression -> factor','expression',1,'p_expression_factor','sbml.py',90),
+  ('expression -> LPAREN expression RPAREN','expression',3,'p_expression_group','sbml.py',94),
+  ('factor -> NUMBER','factor',1,'p_factor_number','sbml.py',98),
 ]

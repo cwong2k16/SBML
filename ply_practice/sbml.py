@@ -1,3 +1,7 @@
+'''
+Christopher Wong 110410665
+'''
+
 class Node:
     def __init__(self):
         print("init node")
@@ -18,6 +22,21 @@ class NumberNode(Node):
     def evaluate(self):
         return self.value
 
+class BooleanNode(Node):
+    def __init__(self, v):
+        if v=='True':
+            self.v = True
+        else:
+            self.v = False
+    def evaluate(self):
+        return self.v
+
+class ListNode(Node):
+    def __init__(self, v):
+        self.v = [v]
+    def evaluate(self):
+        return self.v
+
 class BopNode(Node):
     def __init__(self, op, v1, v2):
         self.v1 = v1
@@ -35,19 +54,33 @@ class BopNode(Node):
             return self.v1.evaluate() / self.v2.evaluate()
 
 tokens = (
-    'LPAREN', 'RPAREN',
+    'LPAREN', 'RPAREN', 'SEMI',
     'NUMBER',
-    'PLUS','MINUS','TIMES','DIVIDE'
+    'PLUS','MINUS','TIMES','DIVIDE',
+    'TRUE', 'FALSE',
+    'LBRACKET', 'RBRACKET'
     )
 
 # Tokens
 # t_PRINT    = 'print'
+t_SEMI    = r';'
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
 t_PLUS    = r'\+'
 t_MINUS   = r'-'
 t_TIMES   = r'\*'
 t_DIVIDE  = r'/'
+t_LBRACKET = r'\['
+t_RBRACKET = r'\]'
+
+def t_TRUE(t):
+    'True'
+    t.value = BooleanNode(t.value)
+    
+
+def t_FALSE(t):
+    'False'
+    t.value = BooleanNode(t.value)
 
 def t_NUMBER(t):
     r'-?\d*(\d\.|\.\d)\d* | \d+'
@@ -77,6 +110,18 @@ precedence = (
 def p_statement_expr(t):
     'statement : expression'
     print(t[1].evaluate())
+
+def p_list(t):
+    '''expression LBRACKET in_list RBRACKET'''
+    t[0] = t[2]
+
+def p_in_list(t):
+    '''in_list : expression'''
+    t[0] = ListNode(t[1])
+
+def p_in_list2(t):
+    '''in_list : in_list expression'''
+    t[0] = t[1].v.append(t[2])
 
 def p_expression_binop(t):
     '''expression : expression PLUS factor
@@ -111,4 +156,15 @@ fd = open(sys.argv[1], 'r')
 
 for line in fd:
     code = line.strip()
-    yacc.parse(code)
+    try:
+        lex.input(code)
+        while True:
+            token = lex.token()
+            if not token: break
+        ast = yacc.parse(code)
+    except Exception as e:
+        print("SYNTAX ERROR")
+    try:
+        ast.execute()
+    except Exception as e:
+        print("SEMANTIC ERROR", e)
