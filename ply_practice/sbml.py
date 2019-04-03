@@ -41,9 +41,9 @@ class ListNode(Node):
 
 class StringNode(Node):
     def __init__(self, v):
-        self.v = str(v[1:-1])
+        self.value = str(v)[1:-1]
     def evaluate(self):
-        return self.v
+        return self.value
 
 class BooleanNode(Node):
     def __init__(self, v):
@@ -57,9 +57,6 @@ class BooleanNode(Node):
 # # # # # #  #
 # operations #
 # # # # # #  #
-
-# class Plus(Node):
-
 class BopNode(Node):
     def __init__(self, op, v1, v2):
         self.v1 = v1
@@ -68,7 +65,10 @@ class BopNode(Node):
 
     def evaluate(self):
         if (self.op == '+'):
-            return self.v1.evaluate() + self.v2.evaluate()
+            if (isinstance(self.v1, (int, float)) and isinstance(self.v2, (int, float))) or (type(self.v1.evaluate()) == type(self.v2.evaluate())):
+                return self.v1.evaluate() + self.v2.evaluate()
+            else:
+                return "SEMANTIC ERROR"
         elif (self.op == '-'):
             return self.v1.evaluate() - self.v2.evaluate()
         elif (self.op == '*'):
@@ -110,7 +110,7 @@ tokens = (
     # integer, real
     'NUMBER',
     # boolean
-    'TRUE', 'FALSE'
+    'TRUE', 'FALSE',
     # string
     'STR'
     )
@@ -152,12 +152,12 @@ def t_NUMBER(t):
     return t
 
 def t_TRUE(t):
-    'True'
+    r'True'
     t.value = BooleanNode(t.value)
     return t
     
 def t_FALSE(t):
-    'False'
+    r'False'
     t.value = BooleanNode(t.value)
     return t
 
@@ -194,7 +194,10 @@ precedence = (
 
 def p_statement_expr(t):
     'statement : expression SEMI'
-    print(t[1].evaluate())
+    if type(t[1].evaluate()) == str:
+        print("'" + t[1].evaluate() + "'")
+    else:
+        print(t[1].evaluate())
 
 def p_list(t):
     '''list : expression LBRACKET in_list RBRACKET'''
@@ -219,16 +222,13 @@ def p_expression_binop(t):
     t[0] = BopNode(t[2], t[1], t[3])
 
 def p_expression_factor(t):
-    '''expression : factor'''
+    '''expression : NUMBER
+                  | STR'''
     t[0] = t[1]
 
 def p_expression_group(t):
     'expression : LPAREN expression RPAREN'
     t[0] = t[2]
-
-def p_factor_number(t):
-    'factor : NUMBER'
-    t[0] = t[1]
 
 def p_error(t):
     print("Syntax error at '%s'" % t.value)
