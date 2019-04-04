@@ -3,6 +3,12 @@ Christopher Wong 110410665
 '''
 
 # # # # # # # #
+# error types #
+# # # # # # # #
+class SemanticError(Exception):
+    pass
+
+# # # # # # # #
 # data types  #
 # # # # # # # #
 class Node:
@@ -65,22 +71,100 @@ class BopNode(Node):
 
     def evaluate(self):
         if (self.op == '+'):
-            if (isinstance(self.v1, (int, float)) and isinstance(self.v2, (int, float))) or (type(self.v1.evaluate()) == type(self.v2.evaluate())):
+            if (isNumber(self.v1, self.v2) or isString(self.v1, self.v2) or isList(self.v1, self.v2)):
                 return self.v1.evaluate() + self.v2.evaluate()
             else:
-                return "SEMANTIC ERROR"
+                raise SemanticError()
         elif (self.op == '-'):
-            return self.v1.evaluate() - self.v2.evaluate()
+            if(isNumber(self.v1, self.v2)):
+                return self.v1.evaluate() - self.v2.evaluate()
+            else:
+                raise SemanticError()
         elif (self.op == '*'):
+            if(isNumber(self.v1, self.v2)):
+                return self.v1.evaluate() * self.v2.evaluate()
+            else:
+                raise SemanticError()
             return self.v1.evaluate() * self.v2.evaluate()
         elif (self.op == '/'):
+            if(isNumber(self.v1, self.v2) and self.v2.evaluate() != 0):
+                return self.v1.evaluate() / self.v2.evaluate()
+            else:
+                raise SemanticError()
             return self.v1.evaluate() / self.v2.evaluate()
         elif (self.op == 'div'):
-            return self.v1.evaluate() // self.v2.evaluate()
+            if(isNumber(self.v1, self.v2) and self.v2.evaluate() != 0):
+                return self.v1.evaluate() // self.v2.evaluate()
+            else:
+                raise SemanticError()
         elif (self.op == 'mod'):
-            return self.v1.evaluate() % self.v2.evaluate()
+            if(isNumber(self.v1, self.v2) and self.v2.evaluate() != 0):
+                return self.v1.evaluate() % self.v2.evaluate()
+            else:
+                raise SemanticError()
         elif (self.op == '**'):
-            return self.v1.evaluate() ** self.v2.evaluate()
+            if(isNumber(self.v1, self.v2) and self.v2.evaluate() != 0):
+                return self.v1.evaluate() ** self.v2.evaluate()
+            else:
+                raise SemanticError()
+        elif (self.op == 'in'):
+            if(isString(self.v1, self.v2) or isinstance(self.v2.evaluate(), list)):
+                return self.v1.evaluate() in self.v2.evaluate()
+            else:
+                raise SemanticError()
+        elif (self.op == '<'):
+            if(isNumber(self.v1, self.v2) or isString(self.v1, self.v2)):
+                return self.v1.evaluate() < self.v2.evaluate()
+            else:
+                raise SemanticError()
+        elif (self.op == '<='):
+            if(isNumber(self.v1, self.v2) or isString(self.v1, self.v2)):
+                return self.v1.evaluate() <= self.v2.evaluate()
+            else:
+                raise SemanticError()
+        elif (self.op == '=='):
+            if(isNumber(self.v1, self.v2) or isString(self.v1, self.v2)):
+                return self.v1.evaluate() == self.v2.evaluate()
+            else:
+                raise SemanticError()
+        elif (self.op == '<>'):
+            if(isNumber(self.v1, self.v2) or isString(self.v1, self.v2)):
+                return self.v1.evaluate() != self.v2.evaluate()
+            else:
+                raise SemanticError()
+        elif (self.op == '>'):
+            if(isNumber(self.v1, self.v2) or isString(self.v1, self.v2)):
+                return self.v1.evaluate() > self.v2.evaluate()
+            else:
+                raise SemanticError()
+        elif (self.op == '>='):
+            if(isNumber(self.v1, self.v2) or isString(self.v1, self.v2)):
+                return self.v1.evaluate() >= self.v2.evaluate()
+            else:
+                raise SemanticError()
+        elif (self.op == 'orelse'):
+            if(isBool(self.v1, self.v2)):
+                return self.v1.evaluate() or self.v2.evaluate()
+            else:
+                raise SemanticError()
+        elif (self.op == 'andalso'):
+            if(isBool(self.v1, self.v2)):
+                return self.v1.evaluate() and self.v2.evaluate()
+            else:
+                raise SemanticError()
+
+# helper functions
+def isNumber(v1, v2):
+    return isinstance(v1.evaluate(), (int, float)) and isinstance(v2.evaluate(), (int,float))
+
+def isString(v1, v2):
+    return isinstance(v1.evaluate(), str) and isinstance(v2.evaluate(), str)
+
+def isList(v1, v2):
+    return isinstance(v1.evaluate(), list) and isinstance(v2.evaluate(), list)
+
+def isBool(v1, v2):
+    return isinstance(v1.evaluate(), bool) and isinstance(v2.evaluate(), bool)
 
 tokens = (
     # orelse
@@ -143,7 +227,7 @@ t_COMMA   = r','
 t_SEMI    = r';'
 
 def t_NUMBER(t):
-    r'-?\d*(\d\.|\.\d)\d* | \d+'
+    r'-?\d*(\d\.|\.\d)\d* | -?\d+'
     try:
         t.value = NumberNode(t.value)
     except ValueError:
@@ -170,7 +254,7 @@ def t_STR(t):
 t_ignore = " \t"
 
 def t_error(t):
-    print("Syntax error at '%s'" % t.value)
+    print("SYNTAX ERROR")
     
 # Build the lexer
 import ply.lex as lex
@@ -200,7 +284,7 @@ def p_statement_expr(t):
         print(t[1].evaluate())
 
 def p_list(t):
-    '''list : expression LBRACKET in_list RBRACKET'''
+    '''list : LBRACKET in_list RBRACKET'''
     t[0] = t[2]
 
 def p_in_list(t):
@@ -208,22 +292,39 @@ def p_in_list(t):
     t[0] = ListNode(t[1])
 
 def p_in_list2(t):
-    '''in_list : in_list expression'''
-    t[0] = t[1].v.append(t[2])
+    '''in_list : expression COMMA in_list'''
+    t[3].v.insert(0,t[1])
+    t[0] = t[3]
 
+# cluster**** of everything
 def p_expression_binop(t):
+                  # mathy-related stuff, comparison-related stuff, logic-related stuff
     '''expression : expression PLUS expression
                   | expression MINUS expression
                   | expression TIMES expression
                   | expression DIVIDE expression
                   | expression DIV expression
                   | expression MOD expression
-                  | expression POW expression'''
+                  | expression POW expression
+                  
+                  | expression IN expression
+
+                  | expression LESSTHAN expression
+                  | expression LESSTHANEQ expression
+                  | expression EQUAL expression
+                  | expression NOTEQ expression
+                  | expression GREATERTHAN expression
+                  | expression GREATERTHANEQ expression
+                  
+                  | expression OR expression
+                  | expression AND expression'''        
     t[0] = BopNode(t[2], t[1], t[3])
 
 def p_expression_factor(t):
     '''expression : NUMBER
-                  | STR'''
+                  | STR
+                  | list
+                  '''
     t[0] = t[1]
 
 def p_expression_group(t):
@@ -231,7 +332,7 @@ def p_expression_group(t):
     t[0] = t[2]
 
 def p_error(t):
-    print("Syntax error at '%s'" % t.value)
+    print("SYNTAX ERROR")
 
 import ply.yacc as yacc
 yacc.yacc()
@@ -251,5 +352,7 @@ for line in fd:
             if not token: 
                 break
         ast = yacc.parse(code)
-    except Exception as e:
-        print("SYNTAX ERROR")
+    except SemanticError:
+        print("SEMANTIC ERROR")
+    # except Exception:
+        # print("SYNTAX ERROR")
