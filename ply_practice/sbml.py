@@ -293,7 +293,7 @@ def p_in_list(t):
 
 def p_in_list2(t):
     '''in_list : expression COMMA in_list'''
-    t[3].v.insert(0,t[1])
+    t[3].v.append(t[1])
     t[0] = t[3]
 
 # cluster**** of everything
