@@ -172,7 +172,10 @@ class IndexNode(Node):
     def evaluate(self):
         if(type(self.needle.evaluate()) == int):
             if(type(self.haystack.evaluate()) in [str, list]):
-                return self.haystack.evaluate()[self.needle.evaluate()]
+                try:
+                    return self.haystack.evaluate()[self.needle.evaluate()]
+                except Exception:
+                    raise SemanticError()
         raise SemanticError()
 
 # helper functions
@@ -319,9 +322,7 @@ def p_in_list2(t):
     t[0] = t[3]
 
 def p_expression_index(t):
-    '''index : STR LBRACKET expression RBRACKET
-                   | list LBRACKET expression RBRACKET
-                   | index LBRACKET expression RBRACKET'''
+    '''index : expression LBRACKET expression RBRACKET'''
     t[0] = IndexNode(t[1], t[3])
 
 # cluster**** of everything
