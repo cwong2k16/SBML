@@ -39,10 +39,10 @@ class ListNode(Node):
     def evaluate(self):
         lst = []
         for val in self.v:
-            if(isinstance(val, list)):
-                lst.append(val)
-            else:
+            if(type(val) != list):
                 lst.append(val.evaluate())
+            else:
+                lst.append(val)
         return lst
 
 class StringNode(Node):
@@ -112,6 +112,17 @@ class BopNode(Node):
                 return self.v1.evaluate() in self.v2.evaluate()
             else:
                 raise SemanticError()
+        elif (self.op == '::'):
+            if(isinstance(self.v2.evaluate(), list)):
+                res = self.v2.evaluate()
+                if(isinstance(self.v1.evaluate(), list)):
+                    res = ListNode(self.v1.evaluate()).evaluate() + res
+                    return res
+                else:
+                    res.insert(0, self.v1.evaluate())
+                    return res
+            else:
+                raise SemanticError()
         elif (self.op == '<'):
             if(isNumber(self.v1, self.v2) or isString(self.v1, self.v2)):
                 return self.v1.evaluate() < self.v2.evaluate()
@@ -153,9 +164,20 @@ class BopNode(Node):
             else:
                 raise SemanticError()
 
+class IndexNode(Node):
+    def __init__(self, haystack, needle):
+        self.haystack = haystack
+        self.needle = needle
+
+    def evaluate(self):
+        if(type(self.needle.evaluate()) == int):
+            if(type(self.haystack.evaluate()) in [str, list]):
+                return self.haystack.evaluate()[self.needle.evaluate()]
+        raise SemanticError()
+
 # helper functions
 def isNumber(v1, v2):
-    return isinstance(v1.evaluate(), (int, float)) and isinstance(v2.evaluate(), (int,float))
+    return type(v1.evaluate()) in [int, float] and type(v2.evaluate()) in [int,float]
 
 def isString(v1, v2):
     return isinstance(v1.evaluate(), str) and isinstance(v2.evaluate(), str)
@@ -164,7 +186,7 @@ def isList(v1, v2):
     return isinstance(v1.evaluate(), list) and isinstance(v2.evaluate(), list)
 
 def isBool(v1, v2):
-    return isinstance(v1.evaluate(), bool) and isinstance(v2.evaluate(), bool)
+    return (type(v1.evaluate()) == bool) and (type(v2.evaluate()) == bool)
 
 tokens = (
     # orelse
@@ -293,12 +315,17 @@ def p_in_list(t):
 
 def p_in_list2(t):
     '''in_list : expression COMMA in_list'''
-    t[3].v.append(t[1])
+    t[3].v.insert(0, t[1])
     t[0] = t[3]
+
+def p_expression_index(t):
+    '''index : STR LBRACKET expression RBRACKET
+                   | list LBRACKET expression RBRACKET
+                   | index LBRACKET expression RBRACKET'''
+    t[0] = IndexNode(t[1], t[3])
 
 # cluster**** of everything
 def p_expression_binop(t):
-                  # mathy-related stuff, comparison-related stuff, logic-related stuff
     '''expression : expression PLUS expression
                   | expression MINUS expression
                   | expression TIMES expression
@@ -308,6 +335,7 @@ def p_expression_binop(t):
                   | expression POW expression
                   
                   | expression IN expression
+                  | expression CON expression
 
                   | expression LESSTHAN expression
                   | expression LESSTHANEQ expression
@@ -324,6 +352,9 @@ def p_expression_factor(t):
     '''expression : NUMBER
                   | STR
                   | list
+                  | TRUE
+                  | FALSE
+                  | index
                   '''
     t[0] = t[1]
 
@@ -354,5 +385,3 @@ for line in fd:
         ast = yacc.parse(code)
     except SemanticError:
         print("SEMANTIC ERROR")
-    # except Exception:
-        # print("SYNTAX ERROR")
