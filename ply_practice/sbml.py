@@ -1,3 +1,5 @@
+import inspect
+
 '''
 Christopher Wong 110410665
 '''
@@ -5,6 +7,8 @@ Christopher Wong 110410665
 # # # # # # # #
 # error types #
 # # # # # # # #
+class SyntaxError(Exception):
+    pass
 class SemanticError(Exception):
     pass
 
@@ -31,7 +35,17 @@ class NumberNode(Node):
     def evaluate(self):
         return self.value
 
-### Class Tuples(Node):
+class TupleNode(Node):
+    def __init__(self, v, v2):
+        self.v = [v, v2]
+    def evaluate(self):
+        lst = []
+        for val in self.v:
+            if(type(val) != list):
+                lst.append(val.evaluate())
+            else:
+                lst.append(val)
+        return tuple(lst)
 
 class ListNode(Node):
     def __init__(self, v):
@@ -164,6 +178,28 @@ class BopNode(Node):
             else:
                 raise SemanticError()
 
+class UNode(Node):
+    def __init__(self, op, v1):
+        self.v1 = v1
+        self.op = op
+
+    def evaluate(self):
+        if (self.op == '-'):
+            if(type(self.v1.evaluate()) in [float,int]):
+                return -self.v1.evaluate()
+            else:
+                raise SemanticError()
+        elif(self.op == '+'):
+            if(type(self.v1.evaluate()) in [float,int]):
+                return self.v1.evaluate()
+            else:
+                raise SemanticError()
+        elif(self.op == 'not'):
+            if(type(self.v1.evaluate()) == bool):
+                return not self.v1.evaluate()
+            else:
+                raise SemanticError()
+
 class IndexNode(Node):
     def __init__(self, haystack, needle):
         self.haystack = haystack
@@ -174,6 +210,20 @@ class IndexNode(Node):
             if(type(self.haystack.evaluate()) in [str, list]):
                 try:
                     return self.haystack.evaluate()[self.needle.evaluate()]
+                except Exception:
+                    raise SemanticError()
+        raise SemanticError()
+
+class HashNode(Node):
+    def __init__(self, haystack, needle):
+        self.haystack = haystack
+        self.needle = needle
+
+    def evaluate(self):
+        if(type(self.needle.evaluate()) == int):
+            if(type(self.haystack.evaluate()) == tuple):
+                try:
+                    return self.haystack.evaluate()[self.needle.evaluate()-1]
                 except Exception:
                     raise SemanticError()
         raise SemanticError()
@@ -205,7 +255,7 @@ tokens = (
     # in
     'IN',
     # +, -
-    'PLUS','MINUS',
+    'PLUS','MINUS', 
     # *, /, div, mod
     'TIMES','DIVIDE', 'DIV', 'MOD',
     # pow
@@ -252,7 +302,7 @@ t_COMMA   = r','
 t_SEMI    = r';'
 
 def t_NUMBER(t):
-    r'-?\d*(\d\.|\.\d)\d* | -?\d+'
+    r'-?\d*(\d\.|\.\d)\d* | \d+'
     try:
         t.value = NumberNode(t.value)
     except ValueError:
@@ -279,7 +329,7 @@ def t_STR(t):
 t_ignore = " \t"
 
 def t_error(t):
-    print("SYNTAX ERROR")
+    raise SyntaxError()
     
 # Build the lexer
 import ply.lex as lex
@@ -295,10 +345,11 @@ precedence = (
     ('left', 'IN'),
     ('left','PLUS','MINUS'),
     ('left','TIMES','DIVIDE', 'DIV', 'MOD'),
+    ('right','UMINUS', 'UPLUS'),
     ('right', 'POW'),
     ('left', 'LBRACKET', 'RBRACKET'),
     ('left', 'HASH'),
-    ('left', 'LPAREN', 'RPAREN')
+    ('left', 'LPAREN', 'RPAREN'),
     )
 
 def p_statement_expr(t):
@@ -321,9 +372,18 @@ def p_in_list2(t):
     t[3].v.insert(0, t[1])
     t[0] = t[3]
 
-def p_expression_index(t):
-    '''index : expression LBRACKET expression RBRACKET'''
-    t[0] = IndexNode(t[1], t[3])
+def p_tuple(t):
+    '''tuple : LPAREN in_tuple RPAREN'''
+    t[0] = t[2]
+
+def p_in_tuple(t):
+    '''in_tuple : expression COMMA expression'''
+    t[0] = TupleNode(t[1], t[3])
+
+def p_in_tuple2(t):
+    '''in_tuple : expression COMMA in_tuple'''
+    t[3].v.insert(0, t[1])
+    t[0] = t[3]
 
 # cluster**** of everything
 def p_expression_binop(t):
@@ -349,6 +409,15 @@ def p_expression_binop(t):
                   | expression AND expression'''        
     t[0] = BopNode(t[2], t[1], t[3])
 
+
+def p_expression_index(t):
+    '''index : expression LBRACKET expression RBRACKET'''
+    t[0] = IndexNode(t[1], t[3])
+
+def p_expression_hash(t):
+    '''hash : HASH NUMBER tuple '''
+    t[0] = HashNode(t[3], t[2])
+
 def p_expression_factor(t):
     '''expression : NUMBER
                   | STR
@@ -356,6 +425,8 @@ def p_expression_factor(t):
                   | TRUE
                   | FALSE
                   | index
+                  | tuple
+                  | hash
                   '''
     t[0] = t[1]
 
@@ -363,8 +434,14 @@ def p_expression_group(t):
     'expression : LPAREN expression RPAREN'
     t[0] = t[2]
 
+def p_expression_unary(t):
+    '''expression : MINUS expression %prec UMINUS
+                  | PLUS expression %prec UPLUS
+                  | NOT expression'''
+    t[0] = UNode(t[1], t[2])
+
 def p_error(t):
-    print("SYNTAX ERROR")
+    raise SyntaxError()
 
 import ply.yacc as yacc
 yacc.yacc()
@@ -386,3 +463,5 @@ for line in fd:
         ast = yacc.parse(code)
     except SemanticError:
         print("SEMANTIC ERROR")
+    except SyntaxError:
+        print("SYNTAX ERROR")
