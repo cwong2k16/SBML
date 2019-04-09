@@ -27,7 +27,7 @@ class Node:
 
 class NumberNode(Node):
     def __init__(self, v):
-        if('.' in v):
+        if('.' in v or 'e' in v):
             self.value = float(v)
         else:
             self.value = int(v)
@@ -302,7 +302,7 @@ t_COMMA   = r','
 t_SEMI    = r';'
 
 def t_NUMBER(t):
-    r'-?\d*(\d\.|\.\d)\d* | \d+'
+    r'\d*([.][\d]+)?[e]([-+])?[\d]+ | \d*(\d\.|\.\d)\d* | \d+'
     try:
         t.value = NumberNode(t.value)
     except ValueError:
