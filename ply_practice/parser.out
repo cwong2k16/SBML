@@ -1,59 +1,148 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    SEMI
-
 Grammar
 
 Rule 0     S' -> statement
-Rule 1     statement -> expression
-Rule 2     expression -> expression PLUS factor
-Rule 3     expression -> expression MINUS factor
-Rule 4     expression -> expression TIMES factor
-Rule 5     expression -> expression DIVIDE factor
-Rule 6     expression -> factor
-Rule 7     expression -> LPAREN expression RPAREN
-Rule 8     factor -> NUMBER
+Rule 1     statement -> expression SEMI
+Rule 2     list -> LBRACKET in_list RBRACKET
+Rule 3     in_list -> expression
+Rule 4     in_list -> in_list COMMA expression
+Rule 5     tuple -> LPAREN in_tuple RPAREN
+Rule 6     in_tuple -> expression COMMA expression
+Rule 7     in_tuple -> in_tuple COMMA expression
+Rule 8     expression -> expression PLUS expression
+Rule 9     expression -> expression MINUS expression
+Rule 10    expression -> expression TIMES expression
+Rule 11    expression -> expression DIVIDE expression
+Rule 12    expression -> expression DIV expression
+Rule 13    expression -> expression MOD expression
+Rule 14    expression -> expression POW expression
+Rule 15    expression -> expression IN expression
+Rule 16    expression -> expression CON expression
+Rule 17    expression -> expression LESSTHAN expression
+Rule 18    expression -> expression LESSTHANEQ expression
+Rule 19    expression -> expression EQUAL expression
+Rule 20    expression -> expression NOTEQ expression
+Rule 21    expression -> expression GREATERTHAN expression
+Rule 22    expression -> expression GREATERTHANEQ expression
+Rule 23    expression -> expression OR expression
+Rule 24    expression -> expression AND expression
+Rule 25    index -> expression LBRACKET expression RBRACKET
+Rule 26    hash -> HASH NUMBER tuple
+Rule 27    expression -> NUMBER
+Rule 28    expression -> STR
+Rule 29    expression -> list
+Rule 30    expression -> TRUE
+Rule 31    expression -> FALSE
+Rule 32    expression -> index
+Rule 33    expression -> tuple
+Rule 34    expression -> hash
+Rule 35    expression -> LPAREN expression RPAREN
+Rule 36    expression -> MINUS expression
+Rule 37    expression -> PLUS expression
+Rule 38    expression -> NOT expression
 
 Terminals, with rules where they appear
 
-DIVIDE               : 5
-LPAREN               : 7
-MINUS                : 3
-NUMBER               : 8
-PLUS                 : 2
-RPAREN               : 7
-SEMI                 : 
-TIMES                : 4
+AND                  : 24
+COMMA                : 4 6 7
+CON                  : 16
+DIV                  : 12
+DIVIDE               : 11
+EQUAL                : 19
+FALSE                : 31
+GREATERTHAN          : 21
+GREATERTHANEQ        : 22
+HASH                 : 26
+IN                   : 15
+LBRACKET             : 2 25
+LESSTHAN             : 17
+LESSTHANEQ           : 18
+LPAREN               : 5 35
+MINUS                : 9 36
+MOD                  : 13
+NOT                  : 38
+NOTEQ                : 20
+NUMBER               : 26 27
+OR                   : 23
+PLUS                 : 8 37
+POW                  : 14
+RBRACKET             : 2 25
+RPAREN               : 5 35
+SEMI                 : 1
+STR                  : 28
+TIMES                : 10
+TRUE                 : 30
 error                : 
 
 Nonterminals, with rules where they appear
 
-expression           : 1 2 3 4 5 7
-factor               : 2 3 4 5 6
+expression           : 1 3 4 6 6 7 8 8 9 9 10 10 11 11 12 12 13 13 14 14 15 15 16 16 17 17 18 18 19 19 20 20 21 21 22 22 23 23 24 24 25 25 35 36 37 38
+hash                 : 34
+in_list              : 2 4
+in_tuple             : 5 7
+index                : 32
+list                 : 29
 statement            : 0
+tuple                : 26 33
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . statement
-    (1) statement -> . expression
-    (2) expression -> . expression PLUS factor
-    (3) expression -> . expression MINUS factor
-    (4) expression -> . expression TIMES factor
-    (5) expression -> . expression DIVIDE factor
-    (6) expression -> . factor
-    (7) expression -> . LPAREN expression RPAREN
-    (8) factor -> . NUMBER
+    (1) statement -> . expression SEMI
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
 
-    LPAREN          shift and go to state 4
     NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
 
     statement                      shift and go to state 1
     expression                     shift and go to state 2
-    factor                         shift and go to state 3
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
 
 state 1
 
@@ -63,167 +152,3523 @@ state 1
 
 state 2
 
-    (1) statement -> expression .
-    (2) expression -> expression . PLUS factor
-    (3) expression -> expression . MINUS factor
-    (4) expression -> expression . TIMES factor
-    (5) expression -> expression . DIVIDE factor
+    (1) statement -> expression . SEMI
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
 
-    $end            reduce using rule 1 (statement -> expression .)
-    PLUS            shift and go to state 6
-    MINUS           shift and go to state 7
-    TIMES           shift and go to state 8
-    DIVIDE          shift and go to state 9
+    SEMI            shift and go to state 17
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+    TIMES           shift and go to state 20
+    DIVIDE          shift and go to state 21
+    DIV             shift and go to state 22
+    MOD             shift and go to state 23
+    POW             shift and go to state 24
+    IN              shift and go to state 25
+    CON             shift and go to state 26
+    LESSTHAN        shift and go to state 27
+    LESSTHANEQ      shift and go to state 28
+    EQUAL           shift and go to state 29
+    NOTEQ           shift and go to state 30
+    GREATERTHAN     shift and go to state 31
+    GREATERTHANEQ   shift and go to state 32
+    OR              shift and go to state 33
+    AND             shift and go to state 34
+    LBRACKET        shift and go to state 35
 
 
 state 3
 
-    (6) expression -> factor .
+    (37) expression -> PLUS . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
 
-    PLUS            reduce using rule 6 (expression -> factor .)
-    MINUS           reduce using rule 6 (expression -> factor .)
-    TIMES           reduce using rule 6 (expression -> factor .)
-    DIVIDE          reduce using rule 6 (expression -> factor .)
-    $end            reduce using rule 6 (expression -> factor .)
-    RPAREN          reduce using rule 6 (expression -> factor .)
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
 
+    expression                     shift and go to state 36
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
 
 state 4
 
-    (7) expression -> LPAREN . expression RPAREN
-    (2) expression -> . expression PLUS factor
-    (3) expression -> . expression MINUS factor
-    (4) expression -> . expression TIMES factor
-    (5) expression -> . expression DIVIDE factor
-    (6) expression -> . factor
-    (7) expression -> . LPAREN expression RPAREN
-    (8) factor -> . NUMBER
+    (36) expression -> MINUS . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
 
-    LPAREN          shift and go to state 4
     NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
 
-    expression                     shift and go to state 10
-    factor                         shift and go to state 3
+    expression                     shift and go to state 37
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
 
 state 5
 
-    (8) factor -> NUMBER .
+    (27) expression -> NUMBER .
 
-    PLUS            reduce using rule 8 (factor -> NUMBER .)
-    MINUS           reduce using rule 8 (factor -> NUMBER .)
-    TIMES           reduce using rule 8 (factor -> NUMBER .)
-    DIVIDE          reduce using rule 8 (factor -> NUMBER .)
-    $end            reduce using rule 8 (factor -> NUMBER .)
-    RPAREN          reduce using rule 8 (factor -> NUMBER .)
+    SEMI            reduce using rule 27 (expression -> NUMBER .)
+    PLUS            reduce using rule 27 (expression -> NUMBER .)
+    MINUS           reduce using rule 27 (expression -> NUMBER .)
+    TIMES           reduce using rule 27 (expression -> NUMBER .)
+    DIVIDE          reduce using rule 27 (expression -> NUMBER .)
+    DIV             reduce using rule 27 (expression -> NUMBER .)
+    MOD             reduce using rule 27 (expression -> NUMBER .)
+    POW             reduce using rule 27 (expression -> NUMBER .)
+    IN              reduce using rule 27 (expression -> NUMBER .)
+    CON             reduce using rule 27 (expression -> NUMBER .)
+    LESSTHAN        reduce using rule 27 (expression -> NUMBER .)
+    LESSTHANEQ      reduce using rule 27 (expression -> NUMBER .)
+    EQUAL           reduce using rule 27 (expression -> NUMBER .)
+    NOTEQ           reduce using rule 27 (expression -> NUMBER .)
+    GREATERTHAN     reduce using rule 27 (expression -> NUMBER .)
+    GREATERTHANEQ   reduce using rule 27 (expression -> NUMBER .)
+    OR              reduce using rule 27 (expression -> NUMBER .)
+    AND             reduce using rule 27 (expression -> NUMBER .)
+    LBRACKET        reduce using rule 27 (expression -> NUMBER .)
+    RPAREN          reduce using rule 27 (expression -> NUMBER .)
+    COMMA           reduce using rule 27 (expression -> NUMBER .)
+    RBRACKET        reduce using rule 27 (expression -> NUMBER .)
 
 
 state 6
 
-    (2) expression -> expression PLUS . factor
-    (8) factor -> . NUMBER
+    (28) expression -> STR .
 
-    NUMBER          shift and go to state 5
+    SEMI            reduce using rule 28 (expression -> STR .)
+    PLUS            reduce using rule 28 (expression -> STR .)
+    MINUS           reduce using rule 28 (expression -> STR .)
+    TIMES           reduce using rule 28 (expression -> STR .)
+    DIVIDE          reduce using rule 28 (expression -> STR .)
+    DIV             reduce using rule 28 (expression -> STR .)
+    MOD             reduce using rule 28 (expression -> STR .)
+    POW             reduce using rule 28 (expression -> STR .)
+    IN              reduce using rule 28 (expression -> STR .)
+    CON             reduce using rule 28 (expression -> STR .)
+    LESSTHAN        reduce using rule 28 (expression -> STR .)
+    LESSTHANEQ      reduce using rule 28 (expression -> STR .)
+    EQUAL           reduce using rule 28 (expression -> STR .)
+    NOTEQ           reduce using rule 28 (expression -> STR .)
+    GREATERTHAN     reduce using rule 28 (expression -> STR .)
+    GREATERTHANEQ   reduce using rule 28 (expression -> STR .)
+    OR              reduce using rule 28 (expression -> STR .)
+    AND             reduce using rule 28 (expression -> STR .)
+    LBRACKET        reduce using rule 28 (expression -> STR .)
+    RPAREN          reduce using rule 28 (expression -> STR .)
+    COMMA           reduce using rule 28 (expression -> STR .)
+    RBRACKET        reduce using rule 28 (expression -> STR .)
 
-    factor                         shift and go to state 11
 
 state 7
 
-    (3) expression -> expression MINUS . factor
-    (8) factor -> . NUMBER
+    (29) expression -> list .
 
-    NUMBER          shift and go to state 5
+    SEMI            reduce using rule 29 (expression -> list .)
+    PLUS            reduce using rule 29 (expression -> list .)
+    MINUS           reduce using rule 29 (expression -> list .)
+    TIMES           reduce using rule 29 (expression -> list .)
+    DIVIDE          reduce using rule 29 (expression -> list .)
+    DIV             reduce using rule 29 (expression -> list .)
+    MOD             reduce using rule 29 (expression -> list .)
+    POW             reduce using rule 29 (expression -> list .)
+    IN              reduce using rule 29 (expression -> list .)
+    CON             reduce using rule 29 (expression -> list .)
+    LESSTHAN        reduce using rule 29 (expression -> list .)
+    LESSTHANEQ      reduce using rule 29 (expression -> list .)
+    EQUAL           reduce using rule 29 (expression -> list .)
+    NOTEQ           reduce using rule 29 (expression -> list .)
+    GREATERTHAN     reduce using rule 29 (expression -> list .)
+    GREATERTHANEQ   reduce using rule 29 (expression -> list .)
+    OR              reduce using rule 29 (expression -> list .)
+    AND             reduce using rule 29 (expression -> list .)
+    LBRACKET        reduce using rule 29 (expression -> list .)
+    RPAREN          reduce using rule 29 (expression -> list .)
+    COMMA           reduce using rule 29 (expression -> list .)
+    RBRACKET        reduce using rule 29 (expression -> list .)
 
-    factor                         shift and go to state 12
 
 state 8
 
-    (4) expression -> expression TIMES . factor
-    (8) factor -> . NUMBER
+    (30) expression -> TRUE .
 
-    NUMBER          shift and go to state 5
+    SEMI            reduce using rule 30 (expression -> TRUE .)
+    PLUS            reduce using rule 30 (expression -> TRUE .)
+    MINUS           reduce using rule 30 (expression -> TRUE .)
+    TIMES           reduce using rule 30 (expression -> TRUE .)
+    DIVIDE          reduce using rule 30 (expression -> TRUE .)
+    DIV             reduce using rule 30 (expression -> TRUE .)
+    MOD             reduce using rule 30 (expression -> TRUE .)
+    POW             reduce using rule 30 (expression -> TRUE .)
+    IN              reduce using rule 30 (expression -> TRUE .)
+    CON             reduce using rule 30 (expression -> TRUE .)
+    LESSTHAN        reduce using rule 30 (expression -> TRUE .)
+    LESSTHANEQ      reduce using rule 30 (expression -> TRUE .)
+    EQUAL           reduce using rule 30 (expression -> TRUE .)
+    NOTEQ           reduce using rule 30 (expression -> TRUE .)
+    GREATERTHAN     reduce using rule 30 (expression -> TRUE .)
+    GREATERTHANEQ   reduce using rule 30 (expression -> TRUE .)
+    OR              reduce using rule 30 (expression -> TRUE .)
+    AND             reduce using rule 30 (expression -> TRUE .)
+    LBRACKET        reduce using rule 30 (expression -> TRUE .)
+    RPAREN          reduce using rule 30 (expression -> TRUE .)
+    COMMA           reduce using rule 30 (expression -> TRUE .)
+    RBRACKET        reduce using rule 30 (expression -> TRUE .)
 
-    factor                         shift and go to state 13
 
 state 9
 
-    (5) expression -> expression DIVIDE . factor
-    (8) factor -> . NUMBER
+    (31) expression -> FALSE .
 
-    NUMBER          shift and go to state 5
+    SEMI            reduce using rule 31 (expression -> FALSE .)
+    PLUS            reduce using rule 31 (expression -> FALSE .)
+    MINUS           reduce using rule 31 (expression -> FALSE .)
+    TIMES           reduce using rule 31 (expression -> FALSE .)
+    DIVIDE          reduce using rule 31 (expression -> FALSE .)
+    DIV             reduce using rule 31 (expression -> FALSE .)
+    MOD             reduce using rule 31 (expression -> FALSE .)
+    POW             reduce using rule 31 (expression -> FALSE .)
+    IN              reduce using rule 31 (expression -> FALSE .)
+    CON             reduce using rule 31 (expression -> FALSE .)
+    LESSTHAN        reduce using rule 31 (expression -> FALSE .)
+    LESSTHANEQ      reduce using rule 31 (expression -> FALSE .)
+    EQUAL           reduce using rule 31 (expression -> FALSE .)
+    NOTEQ           reduce using rule 31 (expression -> FALSE .)
+    GREATERTHAN     reduce using rule 31 (expression -> FALSE .)
+    GREATERTHANEQ   reduce using rule 31 (expression -> FALSE .)
+    OR              reduce using rule 31 (expression -> FALSE .)
+    AND             reduce using rule 31 (expression -> FALSE .)
+    LBRACKET        reduce using rule 31 (expression -> FALSE .)
+    RPAREN          reduce using rule 31 (expression -> FALSE .)
+    COMMA           reduce using rule 31 (expression -> FALSE .)
+    RBRACKET        reduce using rule 31 (expression -> FALSE .)
 
-    factor                         shift and go to state 14
 
 state 10
 
-    (7) expression -> LPAREN expression . RPAREN
-    (2) expression -> expression . PLUS factor
-    (3) expression -> expression . MINUS factor
-    (4) expression -> expression . TIMES factor
-    (5) expression -> expression . DIVIDE factor
+    (32) expression -> index .
 
-    RPAREN          shift and go to state 15
-    PLUS            shift and go to state 6
-    MINUS           shift and go to state 7
-    TIMES           shift and go to state 8
-    DIVIDE          shift and go to state 9
+    SEMI            reduce using rule 32 (expression -> index .)
+    PLUS            reduce using rule 32 (expression -> index .)
+    MINUS           reduce using rule 32 (expression -> index .)
+    TIMES           reduce using rule 32 (expression -> index .)
+    DIVIDE          reduce using rule 32 (expression -> index .)
+    DIV             reduce using rule 32 (expression -> index .)
+    MOD             reduce using rule 32 (expression -> index .)
+    POW             reduce using rule 32 (expression -> index .)
+    IN              reduce using rule 32 (expression -> index .)
+    CON             reduce using rule 32 (expression -> index .)
+    LESSTHAN        reduce using rule 32 (expression -> index .)
+    LESSTHANEQ      reduce using rule 32 (expression -> index .)
+    EQUAL           reduce using rule 32 (expression -> index .)
+    NOTEQ           reduce using rule 32 (expression -> index .)
+    GREATERTHAN     reduce using rule 32 (expression -> index .)
+    GREATERTHANEQ   reduce using rule 32 (expression -> index .)
+    OR              reduce using rule 32 (expression -> index .)
+    AND             reduce using rule 32 (expression -> index .)
+    LBRACKET        reduce using rule 32 (expression -> index .)
+    RPAREN          reduce using rule 32 (expression -> index .)
+    COMMA           reduce using rule 32 (expression -> index .)
+    RBRACKET        reduce using rule 32 (expression -> index .)
 
 
 state 11
 
-    (2) expression -> expression PLUS factor .
+    (33) expression -> tuple .
 
-    PLUS            reduce using rule 2 (expression -> expression PLUS factor .)
-    MINUS           reduce using rule 2 (expression -> expression PLUS factor .)
-    TIMES           reduce using rule 2 (expression -> expression PLUS factor .)
-    DIVIDE          reduce using rule 2 (expression -> expression PLUS factor .)
-    $end            reduce using rule 2 (expression -> expression PLUS factor .)
-    RPAREN          reduce using rule 2 (expression -> expression PLUS factor .)
+    SEMI            reduce using rule 33 (expression -> tuple .)
+    PLUS            reduce using rule 33 (expression -> tuple .)
+    MINUS           reduce using rule 33 (expression -> tuple .)
+    TIMES           reduce using rule 33 (expression -> tuple .)
+    DIVIDE          reduce using rule 33 (expression -> tuple .)
+    DIV             reduce using rule 33 (expression -> tuple .)
+    MOD             reduce using rule 33 (expression -> tuple .)
+    POW             reduce using rule 33 (expression -> tuple .)
+    IN              reduce using rule 33 (expression -> tuple .)
+    CON             reduce using rule 33 (expression -> tuple .)
+    LESSTHAN        reduce using rule 33 (expression -> tuple .)
+    LESSTHANEQ      reduce using rule 33 (expression -> tuple .)
+    EQUAL           reduce using rule 33 (expression -> tuple .)
+    NOTEQ           reduce using rule 33 (expression -> tuple .)
+    GREATERTHAN     reduce using rule 33 (expression -> tuple .)
+    GREATERTHANEQ   reduce using rule 33 (expression -> tuple .)
+    OR              reduce using rule 33 (expression -> tuple .)
+    AND             reduce using rule 33 (expression -> tuple .)
+    LBRACKET        reduce using rule 33 (expression -> tuple .)
+    RPAREN          reduce using rule 33 (expression -> tuple .)
+    COMMA           reduce using rule 33 (expression -> tuple .)
+    RBRACKET        reduce using rule 33 (expression -> tuple .)
 
 
 state 12
 
-    (3) expression -> expression MINUS factor .
+    (34) expression -> hash .
 
-    PLUS            reduce using rule 3 (expression -> expression MINUS factor .)
-    MINUS           reduce using rule 3 (expression -> expression MINUS factor .)
-    TIMES           reduce using rule 3 (expression -> expression MINUS factor .)
-    DIVIDE          reduce using rule 3 (expression -> expression MINUS factor .)
-    $end            reduce using rule 3 (expression -> expression MINUS factor .)
-    RPAREN          reduce using rule 3 (expression -> expression MINUS factor .)
+    SEMI            reduce using rule 34 (expression -> hash .)
+    PLUS            reduce using rule 34 (expression -> hash .)
+    MINUS           reduce using rule 34 (expression -> hash .)
+    TIMES           reduce using rule 34 (expression -> hash .)
+    DIVIDE          reduce using rule 34 (expression -> hash .)
+    DIV             reduce using rule 34 (expression -> hash .)
+    MOD             reduce using rule 34 (expression -> hash .)
+    POW             reduce using rule 34 (expression -> hash .)
+    IN              reduce using rule 34 (expression -> hash .)
+    CON             reduce using rule 34 (expression -> hash .)
+    LESSTHAN        reduce using rule 34 (expression -> hash .)
+    LESSTHANEQ      reduce using rule 34 (expression -> hash .)
+    EQUAL           reduce using rule 34 (expression -> hash .)
+    NOTEQ           reduce using rule 34 (expression -> hash .)
+    GREATERTHAN     reduce using rule 34 (expression -> hash .)
+    GREATERTHANEQ   reduce using rule 34 (expression -> hash .)
+    OR              reduce using rule 34 (expression -> hash .)
+    AND             reduce using rule 34 (expression -> hash .)
+    LBRACKET        reduce using rule 34 (expression -> hash .)
+    RPAREN          reduce using rule 34 (expression -> hash .)
+    COMMA           reduce using rule 34 (expression -> hash .)
+    RBRACKET        reduce using rule 34 (expression -> hash .)
 
 
 state 13
 
-    (4) expression -> expression TIMES factor .
+    (35) expression -> LPAREN . expression RPAREN
+    (5) tuple -> LPAREN . in_tuple RPAREN
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (6) in_tuple -> . expression COMMA expression
+    (7) in_tuple -> . in_tuple COMMA expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
 
-    PLUS            reduce using rule 4 (expression -> expression TIMES factor .)
-    MINUS           reduce using rule 4 (expression -> expression TIMES factor .)
-    TIMES           reduce using rule 4 (expression -> expression TIMES factor .)
-    DIVIDE          reduce using rule 4 (expression -> expression TIMES factor .)
-    $end            reduce using rule 4 (expression -> expression TIMES factor .)
-    RPAREN          reduce using rule 4 (expression -> expression TIMES factor .)
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
 
+    expression                     shift and go to state 38
+    in_tuple                       shift and go to state 39
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
 
 state 14
 
-    (5) expression -> expression DIVIDE factor .
+    (38) expression -> NOT . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
 
-    PLUS            reduce using rule 5 (expression -> expression DIVIDE factor .)
-    MINUS           reduce using rule 5 (expression -> expression DIVIDE factor .)
-    TIMES           reduce using rule 5 (expression -> expression DIVIDE factor .)
-    DIVIDE          reduce using rule 5 (expression -> expression DIVIDE factor .)
-    $end            reduce using rule 5 (expression -> expression DIVIDE factor .)
-    RPAREN          reduce using rule 5 (expression -> expression DIVIDE factor .)
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
 
+    expression                     shift and go to state 40
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
 
 state 15
 
-    (7) expression -> LPAREN expression RPAREN .
+    (2) list -> LBRACKET . in_list RBRACKET
+    (3) in_list -> . expression
+    (4) in_list -> . in_list COMMA expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
 
-    PLUS            reduce using rule 7 (expression -> LPAREN expression RPAREN .)
-    MINUS           reduce using rule 7 (expression -> LPAREN expression RPAREN .)
-    TIMES           reduce using rule 7 (expression -> LPAREN expression RPAREN .)
-    DIVIDE          reduce using rule 7 (expression -> LPAREN expression RPAREN .)
-    $end            reduce using rule 7 (expression -> LPAREN expression RPAREN .)
-    RPAREN          reduce using rule 7 (expression -> LPAREN expression RPAREN .)
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    in_list                        shift and go to state 41
+    expression                     shift and go to state 42
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 16
+
+    (26) hash -> HASH . NUMBER tuple
+
+    NUMBER          shift and go to state 43
+
+
+state 17
+
+    (1) statement -> expression SEMI .
+
+    $end            reduce using rule 1 (statement -> expression SEMI .)
+
+
+state 18
+
+    (8) expression -> expression PLUS . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
+
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    expression                     shift and go to state 44
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 19
+
+    (9) expression -> expression MINUS . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
+
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    expression                     shift and go to state 45
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 20
+
+    (10) expression -> expression TIMES . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
+
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    expression                     shift and go to state 46
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 21
+
+    (11) expression -> expression DIVIDE . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
+
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    expression                     shift and go to state 47
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 22
+
+    (12) expression -> expression DIV . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
+
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    expression                     shift and go to state 48
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 23
+
+    (13) expression -> expression MOD . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
+
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    expression                     shift and go to state 49
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 24
+
+    (14) expression -> expression POW . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
+
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    expression                     shift and go to state 50
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 25
+
+    (15) expression -> expression IN . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
+
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    expression                     shift and go to state 51
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 26
+
+    (16) expression -> expression CON . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
+
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    expression                     shift and go to state 52
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 27
+
+    (17) expression -> expression LESSTHAN . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
+
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    expression                     shift and go to state 53
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 28
+
+    (18) expression -> expression LESSTHANEQ . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
+
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    expression                     shift and go to state 54
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 29
+
+    (19) expression -> expression EQUAL . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
+
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    expression                     shift and go to state 55
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 30
+
+    (20) expression -> expression NOTEQ . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
+
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    expression                     shift and go to state 56
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 31
+
+    (21) expression -> expression GREATERTHAN . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
+
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    expression                     shift and go to state 57
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 32
+
+    (22) expression -> expression GREATERTHANEQ . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
+
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    expression                     shift and go to state 58
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 33
+
+    (23) expression -> expression OR . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
+
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    expression                     shift and go to state 59
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 34
+
+    (24) expression -> expression AND . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
+
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    expression                     shift and go to state 60
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 35
+
+    (25) index -> expression LBRACKET . expression RBRACKET
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
+
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    expression                     shift and go to state 61
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 36
+
+    (37) expression -> PLUS expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    SEMI            reduce using rule 37 (expression -> PLUS expression .)
+    PLUS            reduce using rule 37 (expression -> PLUS expression .)
+    MINUS           reduce using rule 37 (expression -> PLUS expression .)
+    TIMES           reduce using rule 37 (expression -> PLUS expression .)
+    DIVIDE          reduce using rule 37 (expression -> PLUS expression .)
+    DIV             reduce using rule 37 (expression -> PLUS expression .)
+    MOD             reduce using rule 37 (expression -> PLUS expression .)
+    IN              reduce using rule 37 (expression -> PLUS expression .)
+    CON             reduce using rule 37 (expression -> PLUS expression .)
+    LESSTHAN        reduce using rule 37 (expression -> PLUS expression .)
+    LESSTHANEQ      reduce using rule 37 (expression -> PLUS expression .)
+    EQUAL           reduce using rule 37 (expression -> PLUS expression .)
+    NOTEQ           reduce using rule 37 (expression -> PLUS expression .)
+    GREATERTHAN     reduce using rule 37 (expression -> PLUS expression .)
+    GREATERTHANEQ   reduce using rule 37 (expression -> PLUS expression .)
+    OR              reduce using rule 37 (expression -> PLUS expression .)
+    AND             reduce using rule 37 (expression -> PLUS expression .)
+    RPAREN          reduce using rule 37 (expression -> PLUS expression .)
+    COMMA           reduce using rule 37 (expression -> PLUS expression .)
+    RBRACKET        reduce using rule 37 (expression -> PLUS expression .)
+    POW             shift and go to state 24
+    LBRACKET        shift and go to state 35
+
+  ! POW             [ reduce using rule 37 (expression -> PLUS expression .) ]
+  ! LBRACKET        [ reduce using rule 37 (expression -> PLUS expression .) ]
+  ! PLUS            [ shift and go to state 18 ]
+  ! MINUS           [ shift and go to state 19 ]
+  ! TIMES           [ shift and go to state 20 ]
+  ! DIVIDE          [ shift and go to state 21 ]
+  ! DIV             [ shift and go to state 22 ]
+  ! MOD             [ shift and go to state 23 ]
+  ! IN              [ shift and go to state 25 ]
+  ! CON             [ shift and go to state 26 ]
+  ! LESSTHAN        [ shift and go to state 27 ]
+  ! LESSTHANEQ      [ shift and go to state 28 ]
+  ! EQUAL           [ shift and go to state 29 ]
+  ! NOTEQ           [ shift and go to state 30 ]
+  ! GREATERTHAN     [ shift and go to state 31 ]
+  ! GREATERTHANEQ   [ shift and go to state 32 ]
+  ! OR              [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+
+
+state 37
+
+    (36) expression -> MINUS expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    SEMI            reduce using rule 36 (expression -> MINUS expression .)
+    PLUS            reduce using rule 36 (expression -> MINUS expression .)
+    MINUS           reduce using rule 36 (expression -> MINUS expression .)
+    TIMES           reduce using rule 36 (expression -> MINUS expression .)
+    DIVIDE          reduce using rule 36 (expression -> MINUS expression .)
+    DIV             reduce using rule 36 (expression -> MINUS expression .)
+    MOD             reduce using rule 36 (expression -> MINUS expression .)
+    IN              reduce using rule 36 (expression -> MINUS expression .)
+    CON             reduce using rule 36 (expression -> MINUS expression .)
+    LESSTHAN        reduce using rule 36 (expression -> MINUS expression .)
+    LESSTHANEQ      reduce using rule 36 (expression -> MINUS expression .)
+    EQUAL           reduce using rule 36 (expression -> MINUS expression .)
+    NOTEQ           reduce using rule 36 (expression -> MINUS expression .)
+    GREATERTHAN     reduce using rule 36 (expression -> MINUS expression .)
+    GREATERTHANEQ   reduce using rule 36 (expression -> MINUS expression .)
+    OR              reduce using rule 36 (expression -> MINUS expression .)
+    AND             reduce using rule 36 (expression -> MINUS expression .)
+    RPAREN          reduce using rule 36 (expression -> MINUS expression .)
+    COMMA           reduce using rule 36 (expression -> MINUS expression .)
+    RBRACKET        reduce using rule 36 (expression -> MINUS expression .)
+    POW             shift and go to state 24
+    LBRACKET        shift and go to state 35
+
+  ! POW             [ reduce using rule 36 (expression -> MINUS expression .) ]
+  ! LBRACKET        [ reduce using rule 36 (expression -> MINUS expression .) ]
+  ! PLUS            [ shift and go to state 18 ]
+  ! MINUS           [ shift and go to state 19 ]
+  ! TIMES           [ shift and go to state 20 ]
+  ! DIVIDE          [ shift and go to state 21 ]
+  ! DIV             [ shift and go to state 22 ]
+  ! MOD             [ shift and go to state 23 ]
+  ! IN              [ shift and go to state 25 ]
+  ! CON             [ shift and go to state 26 ]
+  ! LESSTHAN        [ shift and go to state 27 ]
+  ! LESSTHANEQ      [ shift and go to state 28 ]
+  ! EQUAL           [ shift and go to state 29 ]
+  ! NOTEQ           [ shift and go to state 30 ]
+  ! GREATERTHAN     [ shift and go to state 31 ]
+  ! GREATERTHANEQ   [ shift and go to state 32 ]
+  ! OR              [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+
+
+state 38
+
+    (35) expression -> LPAREN expression . RPAREN
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (6) in_tuple -> expression . COMMA expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    RPAREN          shift and go to state 62
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+    TIMES           shift and go to state 20
+    DIVIDE          shift and go to state 21
+    DIV             shift and go to state 22
+    MOD             shift and go to state 23
+    POW             shift and go to state 24
+    IN              shift and go to state 25
+    CON             shift and go to state 26
+    LESSTHAN        shift and go to state 27
+    LESSTHANEQ      shift and go to state 28
+    EQUAL           shift and go to state 29
+    NOTEQ           shift and go to state 30
+    GREATERTHAN     shift and go to state 31
+    GREATERTHANEQ   shift and go to state 32
+    OR              shift and go to state 33
+    AND             shift and go to state 34
+    COMMA           shift and go to state 63
+    LBRACKET        shift and go to state 35
+
+
+state 39
+
+    (5) tuple -> LPAREN in_tuple . RPAREN
+    (7) in_tuple -> in_tuple . COMMA expression
+
+    RPAREN          shift and go to state 64
+    COMMA           shift and go to state 65
+
+
+state 40
+
+    (38) expression -> NOT expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    SEMI            reduce using rule 38 (expression -> NOT expression .)
+    OR              reduce using rule 38 (expression -> NOT expression .)
+    AND             reduce using rule 38 (expression -> NOT expression .)
+    RPAREN          reduce using rule 38 (expression -> NOT expression .)
+    COMMA           reduce using rule 38 (expression -> NOT expression .)
+    RBRACKET        reduce using rule 38 (expression -> NOT expression .)
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+    TIMES           shift and go to state 20
+    DIVIDE          shift and go to state 21
+    DIV             shift and go to state 22
+    MOD             shift and go to state 23
+    POW             shift and go to state 24
+    IN              shift and go to state 25
+    CON             shift and go to state 26
+    LESSTHAN        shift and go to state 27
+    LESSTHANEQ      shift and go to state 28
+    EQUAL           shift and go to state 29
+    NOTEQ           shift and go to state 30
+    GREATERTHAN     shift and go to state 31
+    GREATERTHANEQ   shift and go to state 32
+    LBRACKET        shift and go to state 35
+
+  ! PLUS            [ reduce using rule 38 (expression -> NOT expression .) ]
+  ! MINUS           [ reduce using rule 38 (expression -> NOT expression .) ]
+  ! TIMES           [ reduce using rule 38 (expression -> NOT expression .) ]
+  ! DIVIDE          [ reduce using rule 38 (expression -> NOT expression .) ]
+  ! DIV             [ reduce using rule 38 (expression -> NOT expression .) ]
+  ! MOD             [ reduce using rule 38 (expression -> NOT expression .) ]
+  ! POW             [ reduce using rule 38 (expression -> NOT expression .) ]
+  ! IN              [ reduce using rule 38 (expression -> NOT expression .) ]
+  ! CON             [ reduce using rule 38 (expression -> NOT expression .) ]
+  ! LESSTHAN        [ reduce using rule 38 (expression -> NOT expression .) ]
+  ! LESSTHANEQ      [ reduce using rule 38 (expression -> NOT expression .) ]
+  ! EQUAL           [ reduce using rule 38 (expression -> NOT expression .) ]
+  ! NOTEQ           [ reduce using rule 38 (expression -> NOT expression .) ]
+  ! GREATERTHAN     [ reduce using rule 38 (expression -> NOT expression .) ]
+  ! GREATERTHANEQ   [ reduce using rule 38 (expression -> NOT expression .) ]
+  ! LBRACKET        [ reduce using rule 38 (expression -> NOT expression .) ]
+  ! OR              [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+
+
+state 41
+
+    (2) list -> LBRACKET in_list . RBRACKET
+    (4) in_list -> in_list . COMMA expression
+
+    RBRACKET        shift and go to state 66
+    COMMA           shift and go to state 67
+
+
+state 42
+
+    (3) in_list -> expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    RBRACKET        reduce using rule 3 (in_list -> expression .)
+    COMMA           reduce using rule 3 (in_list -> expression .)
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+    TIMES           shift and go to state 20
+    DIVIDE          shift and go to state 21
+    DIV             shift and go to state 22
+    MOD             shift and go to state 23
+    POW             shift and go to state 24
+    IN              shift and go to state 25
+    CON             shift and go to state 26
+    LESSTHAN        shift and go to state 27
+    LESSTHANEQ      shift and go to state 28
+    EQUAL           shift and go to state 29
+    NOTEQ           shift and go to state 30
+    GREATERTHAN     shift and go to state 31
+    GREATERTHANEQ   shift and go to state 32
+    OR              shift and go to state 33
+    AND             shift and go to state 34
+    LBRACKET        shift and go to state 35
+
+
+state 43
+
+    (26) hash -> HASH NUMBER . tuple
+    (5) tuple -> . LPAREN in_tuple RPAREN
+
+    LPAREN          shift and go to state 69
+
+    tuple                          shift and go to state 68
+
+state 44
+
+    (8) expression -> expression PLUS expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    SEMI            reduce using rule 8 (expression -> expression PLUS expression .)
+    PLUS            reduce using rule 8 (expression -> expression PLUS expression .)
+    MINUS           reduce using rule 8 (expression -> expression PLUS expression .)
+    IN              reduce using rule 8 (expression -> expression PLUS expression .)
+    CON             reduce using rule 8 (expression -> expression PLUS expression .)
+    LESSTHAN        reduce using rule 8 (expression -> expression PLUS expression .)
+    LESSTHANEQ      reduce using rule 8 (expression -> expression PLUS expression .)
+    EQUAL           reduce using rule 8 (expression -> expression PLUS expression .)
+    NOTEQ           reduce using rule 8 (expression -> expression PLUS expression .)
+    GREATERTHAN     reduce using rule 8 (expression -> expression PLUS expression .)
+    GREATERTHANEQ   reduce using rule 8 (expression -> expression PLUS expression .)
+    OR              reduce using rule 8 (expression -> expression PLUS expression .)
+    AND             reduce using rule 8 (expression -> expression PLUS expression .)
+    RPAREN          reduce using rule 8 (expression -> expression PLUS expression .)
+    COMMA           reduce using rule 8 (expression -> expression PLUS expression .)
+    RBRACKET        reduce using rule 8 (expression -> expression PLUS expression .)
+    TIMES           shift and go to state 20
+    DIVIDE          shift and go to state 21
+    DIV             shift and go to state 22
+    MOD             shift and go to state 23
+    POW             shift and go to state 24
+    LBRACKET        shift and go to state 35
+
+  ! TIMES           [ reduce using rule 8 (expression -> expression PLUS expression .) ]
+  ! DIVIDE          [ reduce using rule 8 (expression -> expression PLUS expression .) ]
+  ! DIV             [ reduce using rule 8 (expression -> expression PLUS expression .) ]
+  ! MOD             [ reduce using rule 8 (expression -> expression PLUS expression .) ]
+  ! POW             [ reduce using rule 8 (expression -> expression PLUS expression .) ]
+  ! LBRACKET        [ reduce using rule 8 (expression -> expression PLUS expression .) ]
+  ! PLUS            [ shift and go to state 18 ]
+  ! MINUS           [ shift and go to state 19 ]
+  ! IN              [ shift and go to state 25 ]
+  ! CON             [ shift and go to state 26 ]
+  ! LESSTHAN        [ shift and go to state 27 ]
+  ! LESSTHANEQ      [ shift and go to state 28 ]
+  ! EQUAL           [ shift and go to state 29 ]
+  ! NOTEQ           [ shift and go to state 30 ]
+  ! GREATERTHAN     [ shift and go to state 31 ]
+  ! GREATERTHANEQ   [ shift and go to state 32 ]
+  ! OR              [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+
+
+state 45
+
+    (9) expression -> expression MINUS expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    SEMI            reduce using rule 9 (expression -> expression MINUS expression .)
+    PLUS            reduce using rule 9 (expression -> expression MINUS expression .)
+    MINUS           reduce using rule 9 (expression -> expression MINUS expression .)
+    IN              reduce using rule 9 (expression -> expression MINUS expression .)
+    CON             reduce using rule 9 (expression -> expression MINUS expression .)
+    LESSTHAN        reduce using rule 9 (expression -> expression MINUS expression .)
+    LESSTHANEQ      reduce using rule 9 (expression -> expression MINUS expression .)
+    EQUAL           reduce using rule 9 (expression -> expression MINUS expression .)
+    NOTEQ           reduce using rule 9 (expression -> expression MINUS expression .)
+    GREATERTHAN     reduce using rule 9 (expression -> expression MINUS expression .)
+    GREATERTHANEQ   reduce using rule 9 (expression -> expression MINUS expression .)
+    OR              reduce using rule 9 (expression -> expression MINUS expression .)
+    AND             reduce using rule 9 (expression -> expression MINUS expression .)
+    RPAREN          reduce using rule 9 (expression -> expression MINUS expression .)
+    COMMA           reduce using rule 9 (expression -> expression MINUS expression .)
+    RBRACKET        reduce using rule 9 (expression -> expression MINUS expression .)
+    TIMES           shift and go to state 20
+    DIVIDE          shift and go to state 21
+    DIV             shift and go to state 22
+    MOD             shift and go to state 23
+    POW             shift and go to state 24
+    LBRACKET        shift and go to state 35
+
+  ! TIMES           [ reduce using rule 9 (expression -> expression MINUS expression .) ]
+  ! DIVIDE          [ reduce using rule 9 (expression -> expression MINUS expression .) ]
+  ! DIV             [ reduce using rule 9 (expression -> expression MINUS expression .) ]
+  ! MOD             [ reduce using rule 9 (expression -> expression MINUS expression .) ]
+  ! POW             [ reduce using rule 9 (expression -> expression MINUS expression .) ]
+  ! LBRACKET        [ reduce using rule 9 (expression -> expression MINUS expression .) ]
+  ! PLUS            [ shift and go to state 18 ]
+  ! MINUS           [ shift and go to state 19 ]
+  ! IN              [ shift and go to state 25 ]
+  ! CON             [ shift and go to state 26 ]
+  ! LESSTHAN        [ shift and go to state 27 ]
+  ! LESSTHANEQ      [ shift and go to state 28 ]
+  ! EQUAL           [ shift and go to state 29 ]
+  ! NOTEQ           [ shift and go to state 30 ]
+  ! GREATERTHAN     [ shift and go to state 31 ]
+  ! GREATERTHANEQ   [ shift and go to state 32 ]
+  ! OR              [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+
+
+state 46
+
+    (10) expression -> expression TIMES expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    SEMI            reduce using rule 10 (expression -> expression TIMES expression .)
+    PLUS            reduce using rule 10 (expression -> expression TIMES expression .)
+    MINUS           reduce using rule 10 (expression -> expression TIMES expression .)
+    TIMES           reduce using rule 10 (expression -> expression TIMES expression .)
+    DIVIDE          reduce using rule 10 (expression -> expression TIMES expression .)
+    DIV             reduce using rule 10 (expression -> expression TIMES expression .)
+    MOD             reduce using rule 10 (expression -> expression TIMES expression .)
+    IN              reduce using rule 10 (expression -> expression TIMES expression .)
+    CON             reduce using rule 10 (expression -> expression TIMES expression .)
+    LESSTHAN        reduce using rule 10 (expression -> expression TIMES expression .)
+    LESSTHANEQ      reduce using rule 10 (expression -> expression TIMES expression .)
+    EQUAL           reduce using rule 10 (expression -> expression TIMES expression .)
+    NOTEQ           reduce using rule 10 (expression -> expression TIMES expression .)
+    GREATERTHAN     reduce using rule 10 (expression -> expression TIMES expression .)
+    GREATERTHANEQ   reduce using rule 10 (expression -> expression TIMES expression .)
+    OR              reduce using rule 10 (expression -> expression TIMES expression .)
+    AND             reduce using rule 10 (expression -> expression TIMES expression .)
+    RPAREN          reduce using rule 10 (expression -> expression TIMES expression .)
+    COMMA           reduce using rule 10 (expression -> expression TIMES expression .)
+    RBRACKET        reduce using rule 10 (expression -> expression TIMES expression .)
+    POW             shift and go to state 24
+    LBRACKET        shift and go to state 35
+
+  ! POW             [ reduce using rule 10 (expression -> expression TIMES expression .) ]
+  ! LBRACKET        [ reduce using rule 10 (expression -> expression TIMES expression .) ]
+  ! PLUS            [ shift and go to state 18 ]
+  ! MINUS           [ shift and go to state 19 ]
+  ! TIMES           [ shift and go to state 20 ]
+  ! DIVIDE          [ shift and go to state 21 ]
+  ! DIV             [ shift and go to state 22 ]
+  ! MOD             [ shift and go to state 23 ]
+  ! IN              [ shift and go to state 25 ]
+  ! CON             [ shift and go to state 26 ]
+  ! LESSTHAN        [ shift and go to state 27 ]
+  ! LESSTHANEQ      [ shift and go to state 28 ]
+  ! EQUAL           [ shift and go to state 29 ]
+  ! NOTEQ           [ shift and go to state 30 ]
+  ! GREATERTHAN     [ shift and go to state 31 ]
+  ! GREATERTHANEQ   [ shift and go to state 32 ]
+  ! OR              [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+
+
+state 47
+
+    (11) expression -> expression DIVIDE expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    SEMI            reduce using rule 11 (expression -> expression DIVIDE expression .)
+    PLUS            reduce using rule 11 (expression -> expression DIVIDE expression .)
+    MINUS           reduce using rule 11 (expression -> expression DIVIDE expression .)
+    TIMES           reduce using rule 11 (expression -> expression DIVIDE expression .)
+    DIVIDE          reduce using rule 11 (expression -> expression DIVIDE expression .)
+    DIV             reduce using rule 11 (expression -> expression DIVIDE expression .)
+    MOD             reduce using rule 11 (expression -> expression DIVIDE expression .)
+    IN              reduce using rule 11 (expression -> expression DIVIDE expression .)
+    CON             reduce using rule 11 (expression -> expression DIVIDE expression .)
+    LESSTHAN        reduce using rule 11 (expression -> expression DIVIDE expression .)
+    LESSTHANEQ      reduce using rule 11 (expression -> expression DIVIDE expression .)
+    EQUAL           reduce using rule 11 (expression -> expression DIVIDE expression .)
+    NOTEQ           reduce using rule 11 (expression -> expression DIVIDE expression .)
+    GREATERTHAN     reduce using rule 11 (expression -> expression DIVIDE expression .)
+    GREATERTHANEQ   reduce using rule 11 (expression -> expression DIVIDE expression .)
+    OR              reduce using rule 11 (expression -> expression DIVIDE expression .)
+    AND             reduce using rule 11 (expression -> expression DIVIDE expression .)
+    RPAREN          reduce using rule 11 (expression -> expression DIVIDE expression .)
+    COMMA           reduce using rule 11 (expression -> expression DIVIDE expression .)
+    RBRACKET        reduce using rule 11 (expression -> expression DIVIDE expression .)
+    POW             shift and go to state 24
+    LBRACKET        shift and go to state 35
+
+  ! POW             [ reduce using rule 11 (expression -> expression DIVIDE expression .) ]
+  ! LBRACKET        [ reduce using rule 11 (expression -> expression DIVIDE expression .) ]
+  ! PLUS            [ shift and go to state 18 ]
+  ! MINUS           [ shift and go to state 19 ]
+  ! TIMES           [ shift and go to state 20 ]
+  ! DIVIDE          [ shift and go to state 21 ]
+  ! DIV             [ shift and go to state 22 ]
+  ! MOD             [ shift and go to state 23 ]
+  ! IN              [ shift and go to state 25 ]
+  ! CON             [ shift and go to state 26 ]
+  ! LESSTHAN        [ shift and go to state 27 ]
+  ! LESSTHANEQ      [ shift and go to state 28 ]
+  ! EQUAL           [ shift and go to state 29 ]
+  ! NOTEQ           [ shift and go to state 30 ]
+  ! GREATERTHAN     [ shift and go to state 31 ]
+  ! GREATERTHANEQ   [ shift and go to state 32 ]
+  ! OR              [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+
+
+state 48
+
+    (12) expression -> expression DIV expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    SEMI            reduce using rule 12 (expression -> expression DIV expression .)
+    PLUS            reduce using rule 12 (expression -> expression DIV expression .)
+    MINUS           reduce using rule 12 (expression -> expression DIV expression .)
+    TIMES           reduce using rule 12 (expression -> expression DIV expression .)
+    DIVIDE          reduce using rule 12 (expression -> expression DIV expression .)
+    DIV             reduce using rule 12 (expression -> expression DIV expression .)
+    MOD             reduce using rule 12 (expression -> expression DIV expression .)
+    IN              reduce using rule 12 (expression -> expression DIV expression .)
+    CON             reduce using rule 12 (expression -> expression DIV expression .)
+    LESSTHAN        reduce using rule 12 (expression -> expression DIV expression .)
+    LESSTHANEQ      reduce using rule 12 (expression -> expression DIV expression .)
+    EQUAL           reduce using rule 12 (expression -> expression DIV expression .)
+    NOTEQ           reduce using rule 12 (expression -> expression DIV expression .)
+    GREATERTHAN     reduce using rule 12 (expression -> expression DIV expression .)
+    GREATERTHANEQ   reduce using rule 12 (expression -> expression DIV expression .)
+    OR              reduce using rule 12 (expression -> expression DIV expression .)
+    AND             reduce using rule 12 (expression -> expression DIV expression .)
+    RPAREN          reduce using rule 12 (expression -> expression DIV expression .)
+    COMMA           reduce using rule 12 (expression -> expression DIV expression .)
+    RBRACKET        reduce using rule 12 (expression -> expression DIV expression .)
+    POW             shift and go to state 24
+    LBRACKET        shift and go to state 35
+
+  ! POW             [ reduce using rule 12 (expression -> expression DIV expression .) ]
+  ! LBRACKET        [ reduce using rule 12 (expression -> expression DIV expression .) ]
+  ! PLUS            [ shift and go to state 18 ]
+  ! MINUS           [ shift and go to state 19 ]
+  ! TIMES           [ shift and go to state 20 ]
+  ! DIVIDE          [ shift and go to state 21 ]
+  ! DIV             [ shift and go to state 22 ]
+  ! MOD             [ shift and go to state 23 ]
+  ! IN              [ shift and go to state 25 ]
+  ! CON             [ shift and go to state 26 ]
+  ! LESSTHAN        [ shift and go to state 27 ]
+  ! LESSTHANEQ      [ shift and go to state 28 ]
+  ! EQUAL           [ shift and go to state 29 ]
+  ! NOTEQ           [ shift and go to state 30 ]
+  ! GREATERTHAN     [ shift and go to state 31 ]
+  ! GREATERTHANEQ   [ shift and go to state 32 ]
+  ! OR              [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+
+
+state 49
+
+    (13) expression -> expression MOD expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    SEMI            reduce using rule 13 (expression -> expression MOD expression .)
+    PLUS            reduce using rule 13 (expression -> expression MOD expression .)
+    MINUS           reduce using rule 13 (expression -> expression MOD expression .)
+    TIMES           reduce using rule 13 (expression -> expression MOD expression .)
+    DIVIDE          reduce using rule 13 (expression -> expression MOD expression .)
+    DIV             reduce using rule 13 (expression -> expression MOD expression .)
+    MOD             reduce using rule 13 (expression -> expression MOD expression .)
+    IN              reduce using rule 13 (expression -> expression MOD expression .)
+    CON             reduce using rule 13 (expression -> expression MOD expression .)
+    LESSTHAN        reduce using rule 13 (expression -> expression MOD expression .)
+    LESSTHANEQ      reduce using rule 13 (expression -> expression MOD expression .)
+    EQUAL           reduce using rule 13 (expression -> expression MOD expression .)
+    NOTEQ           reduce using rule 13 (expression -> expression MOD expression .)
+    GREATERTHAN     reduce using rule 13 (expression -> expression MOD expression .)
+    GREATERTHANEQ   reduce using rule 13 (expression -> expression MOD expression .)
+    OR              reduce using rule 13 (expression -> expression MOD expression .)
+    AND             reduce using rule 13 (expression -> expression MOD expression .)
+    RPAREN          reduce using rule 13 (expression -> expression MOD expression .)
+    COMMA           reduce using rule 13 (expression -> expression MOD expression .)
+    RBRACKET        reduce using rule 13 (expression -> expression MOD expression .)
+    POW             shift and go to state 24
+    LBRACKET        shift and go to state 35
+
+  ! POW             [ reduce using rule 13 (expression -> expression MOD expression .) ]
+  ! LBRACKET        [ reduce using rule 13 (expression -> expression MOD expression .) ]
+  ! PLUS            [ shift and go to state 18 ]
+  ! MINUS           [ shift and go to state 19 ]
+  ! TIMES           [ shift and go to state 20 ]
+  ! DIVIDE          [ shift and go to state 21 ]
+  ! DIV             [ shift and go to state 22 ]
+  ! MOD             [ shift and go to state 23 ]
+  ! IN              [ shift and go to state 25 ]
+  ! CON             [ shift and go to state 26 ]
+  ! LESSTHAN        [ shift and go to state 27 ]
+  ! LESSTHANEQ      [ shift and go to state 28 ]
+  ! EQUAL           [ shift and go to state 29 ]
+  ! NOTEQ           [ shift and go to state 30 ]
+  ! GREATERTHAN     [ shift and go to state 31 ]
+  ! GREATERTHANEQ   [ shift and go to state 32 ]
+  ! OR              [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+
+
+state 50
+
+    (14) expression -> expression POW expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    SEMI            reduce using rule 14 (expression -> expression POW expression .)
+    PLUS            reduce using rule 14 (expression -> expression POW expression .)
+    MINUS           reduce using rule 14 (expression -> expression POW expression .)
+    TIMES           reduce using rule 14 (expression -> expression POW expression .)
+    DIVIDE          reduce using rule 14 (expression -> expression POW expression .)
+    DIV             reduce using rule 14 (expression -> expression POW expression .)
+    MOD             reduce using rule 14 (expression -> expression POW expression .)
+    IN              reduce using rule 14 (expression -> expression POW expression .)
+    CON             reduce using rule 14 (expression -> expression POW expression .)
+    LESSTHAN        reduce using rule 14 (expression -> expression POW expression .)
+    LESSTHANEQ      reduce using rule 14 (expression -> expression POW expression .)
+    EQUAL           reduce using rule 14 (expression -> expression POW expression .)
+    NOTEQ           reduce using rule 14 (expression -> expression POW expression .)
+    GREATERTHAN     reduce using rule 14 (expression -> expression POW expression .)
+    GREATERTHANEQ   reduce using rule 14 (expression -> expression POW expression .)
+    OR              reduce using rule 14 (expression -> expression POW expression .)
+    AND             reduce using rule 14 (expression -> expression POW expression .)
+    RPAREN          reduce using rule 14 (expression -> expression POW expression .)
+    COMMA           reduce using rule 14 (expression -> expression POW expression .)
+    RBRACKET        reduce using rule 14 (expression -> expression POW expression .)
+    POW             shift and go to state 24
+    LBRACKET        shift and go to state 35
+
+  ! POW             [ reduce using rule 14 (expression -> expression POW expression .) ]
+  ! LBRACKET        [ reduce using rule 14 (expression -> expression POW expression .) ]
+  ! PLUS            [ shift and go to state 18 ]
+  ! MINUS           [ shift and go to state 19 ]
+  ! TIMES           [ shift and go to state 20 ]
+  ! DIVIDE          [ shift and go to state 21 ]
+  ! DIV             [ shift and go to state 22 ]
+  ! MOD             [ shift and go to state 23 ]
+  ! IN              [ shift and go to state 25 ]
+  ! CON             [ shift and go to state 26 ]
+  ! LESSTHAN        [ shift and go to state 27 ]
+  ! LESSTHANEQ      [ shift and go to state 28 ]
+  ! EQUAL           [ shift and go to state 29 ]
+  ! NOTEQ           [ shift and go to state 30 ]
+  ! GREATERTHAN     [ shift and go to state 31 ]
+  ! GREATERTHANEQ   [ shift and go to state 32 ]
+  ! OR              [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+
+
+state 51
+
+    (15) expression -> expression IN expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    SEMI            reduce using rule 15 (expression -> expression IN expression .)
+    IN              reduce using rule 15 (expression -> expression IN expression .)
+    CON             reduce using rule 15 (expression -> expression IN expression .)
+    LESSTHAN        reduce using rule 15 (expression -> expression IN expression .)
+    LESSTHANEQ      reduce using rule 15 (expression -> expression IN expression .)
+    EQUAL           reduce using rule 15 (expression -> expression IN expression .)
+    NOTEQ           reduce using rule 15 (expression -> expression IN expression .)
+    GREATERTHAN     reduce using rule 15 (expression -> expression IN expression .)
+    GREATERTHANEQ   reduce using rule 15 (expression -> expression IN expression .)
+    OR              reduce using rule 15 (expression -> expression IN expression .)
+    AND             reduce using rule 15 (expression -> expression IN expression .)
+    RPAREN          reduce using rule 15 (expression -> expression IN expression .)
+    COMMA           reduce using rule 15 (expression -> expression IN expression .)
+    RBRACKET        reduce using rule 15 (expression -> expression IN expression .)
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+    TIMES           shift and go to state 20
+    DIVIDE          shift and go to state 21
+    DIV             shift and go to state 22
+    MOD             shift and go to state 23
+    POW             shift and go to state 24
+    LBRACKET        shift and go to state 35
+
+  ! PLUS            [ reduce using rule 15 (expression -> expression IN expression .) ]
+  ! MINUS           [ reduce using rule 15 (expression -> expression IN expression .) ]
+  ! TIMES           [ reduce using rule 15 (expression -> expression IN expression .) ]
+  ! DIVIDE          [ reduce using rule 15 (expression -> expression IN expression .) ]
+  ! DIV             [ reduce using rule 15 (expression -> expression IN expression .) ]
+  ! MOD             [ reduce using rule 15 (expression -> expression IN expression .) ]
+  ! POW             [ reduce using rule 15 (expression -> expression IN expression .) ]
+  ! LBRACKET        [ reduce using rule 15 (expression -> expression IN expression .) ]
+  ! IN              [ shift and go to state 25 ]
+  ! CON             [ shift and go to state 26 ]
+  ! LESSTHAN        [ shift and go to state 27 ]
+  ! LESSTHANEQ      [ shift and go to state 28 ]
+  ! EQUAL           [ shift and go to state 29 ]
+  ! NOTEQ           [ shift and go to state 30 ]
+  ! GREATERTHAN     [ shift and go to state 31 ]
+  ! GREATERTHANEQ   [ shift and go to state 32 ]
+  ! OR              [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+
+
+state 52
+
+    (16) expression -> expression CON expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    SEMI            reduce using rule 16 (expression -> expression CON expression .)
+    LESSTHAN        reduce using rule 16 (expression -> expression CON expression .)
+    LESSTHANEQ      reduce using rule 16 (expression -> expression CON expression .)
+    EQUAL           reduce using rule 16 (expression -> expression CON expression .)
+    NOTEQ           reduce using rule 16 (expression -> expression CON expression .)
+    GREATERTHAN     reduce using rule 16 (expression -> expression CON expression .)
+    GREATERTHANEQ   reduce using rule 16 (expression -> expression CON expression .)
+    OR              reduce using rule 16 (expression -> expression CON expression .)
+    AND             reduce using rule 16 (expression -> expression CON expression .)
+    RPAREN          reduce using rule 16 (expression -> expression CON expression .)
+    COMMA           reduce using rule 16 (expression -> expression CON expression .)
+    RBRACKET        reduce using rule 16 (expression -> expression CON expression .)
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+    TIMES           shift and go to state 20
+    DIVIDE          shift and go to state 21
+    DIV             shift and go to state 22
+    MOD             shift and go to state 23
+    POW             shift and go to state 24
+    IN              shift and go to state 25
+    CON             shift and go to state 26
+    LBRACKET        shift and go to state 35
+
+  ! PLUS            [ reduce using rule 16 (expression -> expression CON expression .) ]
+  ! MINUS           [ reduce using rule 16 (expression -> expression CON expression .) ]
+  ! TIMES           [ reduce using rule 16 (expression -> expression CON expression .) ]
+  ! DIVIDE          [ reduce using rule 16 (expression -> expression CON expression .) ]
+  ! DIV             [ reduce using rule 16 (expression -> expression CON expression .) ]
+  ! MOD             [ reduce using rule 16 (expression -> expression CON expression .) ]
+  ! POW             [ reduce using rule 16 (expression -> expression CON expression .) ]
+  ! IN              [ reduce using rule 16 (expression -> expression CON expression .) ]
+  ! CON             [ reduce using rule 16 (expression -> expression CON expression .) ]
+  ! LBRACKET        [ reduce using rule 16 (expression -> expression CON expression .) ]
+  ! LESSTHAN        [ shift and go to state 27 ]
+  ! LESSTHANEQ      [ shift and go to state 28 ]
+  ! EQUAL           [ shift and go to state 29 ]
+  ! NOTEQ           [ shift and go to state 30 ]
+  ! GREATERTHAN     [ shift and go to state 31 ]
+  ! GREATERTHANEQ   [ shift and go to state 32 ]
+  ! OR              [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+
+
+state 53
+
+    (17) expression -> expression LESSTHAN expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    SEMI            reduce using rule 17 (expression -> expression LESSTHAN expression .)
+    LESSTHAN        reduce using rule 17 (expression -> expression LESSTHAN expression .)
+    LESSTHANEQ      reduce using rule 17 (expression -> expression LESSTHAN expression .)
+    EQUAL           reduce using rule 17 (expression -> expression LESSTHAN expression .)
+    NOTEQ           reduce using rule 17 (expression -> expression LESSTHAN expression .)
+    GREATERTHAN     reduce using rule 17 (expression -> expression LESSTHAN expression .)
+    GREATERTHANEQ   reduce using rule 17 (expression -> expression LESSTHAN expression .)
+    OR              reduce using rule 17 (expression -> expression LESSTHAN expression .)
+    AND             reduce using rule 17 (expression -> expression LESSTHAN expression .)
+    RPAREN          reduce using rule 17 (expression -> expression LESSTHAN expression .)
+    COMMA           reduce using rule 17 (expression -> expression LESSTHAN expression .)
+    RBRACKET        reduce using rule 17 (expression -> expression LESSTHAN expression .)
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+    TIMES           shift and go to state 20
+    DIVIDE          shift and go to state 21
+    DIV             shift and go to state 22
+    MOD             shift and go to state 23
+    POW             shift and go to state 24
+    IN              shift and go to state 25
+    CON             shift and go to state 26
+    LBRACKET        shift and go to state 35
+
+  ! PLUS            [ reduce using rule 17 (expression -> expression LESSTHAN expression .) ]
+  ! MINUS           [ reduce using rule 17 (expression -> expression LESSTHAN expression .) ]
+  ! TIMES           [ reduce using rule 17 (expression -> expression LESSTHAN expression .) ]
+  ! DIVIDE          [ reduce using rule 17 (expression -> expression LESSTHAN expression .) ]
+  ! DIV             [ reduce using rule 17 (expression -> expression LESSTHAN expression .) ]
+  ! MOD             [ reduce using rule 17 (expression -> expression LESSTHAN expression .) ]
+  ! POW             [ reduce using rule 17 (expression -> expression LESSTHAN expression .) ]
+  ! IN              [ reduce using rule 17 (expression -> expression LESSTHAN expression .) ]
+  ! CON             [ reduce using rule 17 (expression -> expression LESSTHAN expression .) ]
+  ! LBRACKET        [ reduce using rule 17 (expression -> expression LESSTHAN expression .) ]
+  ! LESSTHAN        [ shift and go to state 27 ]
+  ! LESSTHANEQ      [ shift and go to state 28 ]
+  ! EQUAL           [ shift and go to state 29 ]
+  ! NOTEQ           [ shift and go to state 30 ]
+  ! GREATERTHAN     [ shift and go to state 31 ]
+  ! GREATERTHANEQ   [ shift and go to state 32 ]
+  ! OR              [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+
+
+state 54
+
+    (18) expression -> expression LESSTHANEQ expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    SEMI            reduce using rule 18 (expression -> expression LESSTHANEQ expression .)
+    LESSTHAN        reduce using rule 18 (expression -> expression LESSTHANEQ expression .)
+    LESSTHANEQ      reduce using rule 18 (expression -> expression LESSTHANEQ expression .)
+    EQUAL           reduce using rule 18 (expression -> expression LESSTHANEQ expression .)
+    NOTEQ           reduce using rule 18 (expression -> expression LESSTHANEQ expression .)
+    GREATERTHAN     reduce using rule 18 (expression -> expression LESSTHANEQ expression .)
+    GREATERTHANEQ   reduce using rule 18 (expression -> expression LESSTHANEQ expression .)
+    OR              reduce using rule 18 (expression -> expression LESSTHANEQ expression .)
+    AND             reduce using rule 18 (expression -> expression LESSTHANEQ expression .)
+    RPAREN          reduce using rule 18 (expression -> expression LESSTHANEQ expression .)
+    COMMA           reduce using rule 18 (expression -> expression LESSTHANEQ expression .)
+    RBRACKET        reduce using rule 18 (expression -> expression LESSTHANEQ expression .)
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+    TIMES           shift and go to state 20
+    DIVIDE          shift and go to state 21
+    DIV             shift and go to state 22
+    MOD             shift and go to state 23
+    POW             shift and go to state 24
+    IN              shift and go to state 25
+    CON             shift and go to state 26
+    LBRACKET        shift and go to state 35
+
+  ! PLUS            [ reduce using rule 18 (expression -> expression LESSTHANEQ expression .) ]
+  ! MINUS           [ reduce using rule 18 (expression -> expression LESSTHANEQ expression .) ]
+  ! TIMES           [ reduce using rule 18 (expression -> expression LESSTHANEQ expression .) ]
+  ! DIVIDE          [ reduce using rule 18 (expression -> expression LESSTHANEQ expression .) ]
+  ! DIV             [ reduce using rule 18 (expression -> expression LESSTHANEQ expression .) ]
+  ! MOD             [ reduce using rule 18 (expression -> expression LESSTHANEQ expression .) ]
+  ! POW             [ reduce using rule 18 (expression -> expression LESSTHANEQ expression .) ]
+  ! IN              [ reduce using rule 18 (expression -> expression LESSTHANEQ expression .) ]
+  ! CON             [ reduce using rule 18 (expression -> expression LESSTHANEQ expression .) ]
+  ! LBRACKET        [ reduce using rule 18 (expression -> expression LESSTHANEQ expression .) ]
+  ! LESSTHAN        [ shift and go to state 27 ]
+  ! LESSTHANEQ      [ shift and go to state 28 ]
+  ! EQUAL           [ shift and go to state 29 ]
+  ! NOTEQ           [ shift and go to state 30 ]
+  ! GREATERTHAN     [ shift and go to state 31 ]
+  ! GREATERTHANEQ   [ shift and go to state 32 ]
+  ! OR              [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+
+
+state 55
+
+    (19) expression -> expression EQUAL expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    SEMI            reduce using rule 19 (expression -> expression EQUAL expression .)
+    LESSTHAN        reduce using rule 19 (expression -> expression EQUAL expression .)
+    LESSTHANEQ      reduce using rule 19 (expression -> expression EQUAL expression .)
+    EQUAL           reduce using rule 19 (expression -> expression EQUAL expression .)
+    NOTEQ           reduce using rule 19 (expression -> expression EQUAL expression .)
+    GREATERTHAN     reduce using rule 19 (expression -> expression EQUAL expression .)
+    GREATERTHANEQ   reduce using rule 19 (expression -> expression EQUAL expression .)
+    OR              reduce using rule 19 (expression -> expression EQUAL expression .)
+    AND             reduce using rule 19 (expression -> expression EQUAL expression .)
+    RPAREN          reduce using rule 19 (expression -> expression EQUAL expression .)
+    COMMA           reduce using rule 19 (expression -> expression EQUAL expression .)
+    RBRACKET        reduce using rule 19 (expression -> expression EQUAL expression .)
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+    TIMES           shift and go to state 20
+    DIVIDE          shift and go to state 21
+    DIV             shift and go to state 22
+    MOD             shift and go to state 23
+    POW             shift and go to state 24
+    IN              shift and go to state 25
+    CON             shift and go to state 26
+    LBRACKET        shift and go to state 35
+
+  ! PLUS            [ reduce using rule 19 (expression -> expression EQUAL expression .) ]
+  ! MINUS           [ reduce using rule 19 (expression -> expression EQUAL expression .) ]
+  ! TIMES           [ reduce using rule 19 (expression -> expression EQUAL expression .) ]
+  ! DIVIDE          [ reduce using rule 19 (expression -> expression EQUAL expression .) ]
+  ! DIV             [ reduce using rule 19 (expression -> expression EQUAL expression .) ]
+  ! MOD             [ reduce using rule 19 (expression -> expression EQUAL expression .) ]
+  ! POW             [ reduce using rule 19 (expression -> expression EQUAL expression .) ]
+  ! IN              [ reduce using rule 19 (expression -> expression EQUAL expression .) ]
+  ! CON             [ reduce using rule 19 (expression -> expression EQUAL expression .) ]
+  ! LBRACKET        [ reduce using rule 19 (expression -> expression EQUAL expression .) ]
+  ! LESSTHAN        [ shift and go to state 27 ]
+  ! LESSTHANEQ      [ shift and go to state 28 ]
+  ! EQUAL           [ shift and go to state 29 ]
+  ! NOTEQ           [ shift and go to state 30 ]
+  ! GREATERTHAN     [ shift and go to state 31 ]
+  ! GREATERTHANEQ   [ shift and go to state 32 ]
+  ! OR              [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+
+
+state 56
+
+    (20) expression -> expression NOTEQ expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    SEMI            reduce using rule 20 (expression -> expression NOTEQ expression .)
+    LESSTHAN        reduce using rule 20 (expression -> expression NOTEQ expression .)
+    LESSTHANEQ      reduce using rule 20 (expression -> expression NOTEQ expression .)
+    EQUAL           reduce using rule 20 (expression -> expression NOTEQ expression .)
+    NOTEQ           reduce using rule 20 (expression -> expression NOTEQ expression .)
+    GREATERTHAN     reduce using rule 20 (expression -> expression NOTEQ expression .)
+    GREATERTHANEQ   reduce using rule 20 (expression -> expression NOTEQ expression .)
+    OR              reduce using rule 20 (expression -> expression NOTEQ expression .)
+    AND             reduce using rule 20 (expression -> expression NOTEQ expression .)
+    RPAREN          reduce using rule 20 (expression -> expression NOTEQ expression .)
+    COMMA           reduce using rule 20 (expression -> expression NOTEQ expression .)
+    RBRACKET        reduce using rule 20 (expression -> expression NOTEQ expression .)
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+    TIMES           shift and go to state 20
+    DIVIDE          shift and go to state 21
+    DIV             shift and go to state 22
+    MOD             shift and go to state 23
+    POW             shift and go to state 24
+    IN              shift and go to state 25
+    CON             shift and go to state 26
+    LBRACKET        shift and go to state 35
+
+  ! PLUS            [ reduce using rule 20 (expression -> expression NOTEQ expression .) ]
+  ! MINUS           [ reduce using rule 20 (expression -> expression NOTEQ expression .) ]
+  ! TIMES           [ reduce using rule 20 (expression -> expression NOTEQ expression .) ]
+  ! DIVIDE          [ reduce using rule 20 (expression -> expression NOTEQ expression .) ]
+  ! DIV             [ reduce using rule 20 (expression -> expression NOTEQ expression .) ]
+  ! MOD             [ reduce using rule 20 (expression -> expression NOTEQ expression .) ]
+  ! POW             [ reduce using rule 20 (expression -> expression NOTEQ expression .) ]
+  ! IN              [ reduce using rule 20 (expression -> expression NOTEQ expression .) ]
+  ! CON             [ reduce using rule 20 (expression -> expression NOTEQ expression .) ]
+  ! LBRACKET        [ reduce using rule 20 (expression -> expression NOTEQ expression .) ]
+  ! LESSTHAN        [ shift and go to state 27 ]
+  ! LESSTHANEQ      [ shift and go to state 28 ]
+  ! EQUAL           [ shift and go to state 29 ]
+  ! NOTEQ           [ shift and go to state 30 ]
+  ! GREATERTHAN     [ shift and go to state 31 ]
+  ! GREATERTHANEQ   [ shift and go to state 32 ]
+  ! OR              [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+
+
+state 57
+
+    (21) expression -> expression GREATERTHAN expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    SEMI            reduce using rule 21 (expression -> expression GREATERTHAN expression .)
+    LESSTHAN        reduce using rule 21 (expression -> expression GREATERTHAN expression .)
+    LESSTHANEQ      reduce using rule 21 (expression -> expression GREATERTHAN expression .)
+    EQUAL           reduce using rule 21 (expression -> expression GREATERTHAN expression .)
+    NOTEQ           reduce using rule 21 (expression -> expression GREATERTHAN expression .)
+    GREATERTHAN     reduce using rule 21 (expression -> expression GREATERTHAN expression .)
+    GREATERTHANEQ   reduce using rule 21 (expression -> expression GREATERTHAN expression .)
+    OR              reduce using rule 21 (expression -> expression GREATERTHAN expression .)
+    AND             reduce using rule 21 (expression -> expression GREATERTHAN expression .)
+    RPAREN          reduce using rule 21 (expression -> expression GREATERTHAN expression .)
+    COMMA           reduce using rule 21 (expression -> expression GREATERTHAN expression .)
+    RBRACKET        reduce using rule 21 (expression -> expression GREATERTHAN expression .)
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+    TIMES           shift and go to state 20
+    DIVIDE          shift and go to state 21
+    DIV             shift and go to state 22
+    MOD             shift and go to state 23
+    POW             shift and go to state 24
+    IN              shift and go to state 25
+    CON             shift and go to state 26
+    LBRACKET        shift and go to state 35
+
+  ! PLUS            [ reduce using rule 21 (expression -> expression GREATERTHAN expression .) ]
+  ! MINUS           [ reduce using rule 21 (expression -> expression GREATERTHAN expression .) ]
+  ! TIMES           [ reduce using rule 21 (expression -> expression GREATERTHAN expression .) ]
+  ! DIVIDE          [ reduce using rule 21 (expression -> expression GREATERTHAN expression .) ]
+  ! DIV             [ reduce using rule 21 (expression -> expression GREATERTHAN expression .) ]
+  ! MOD             [ reduce using rule 21 (expression -> expression GREATERTHAN expression .) ]
+  ! POW             [ reduce using rule 21 (expression -> expression GREATERTHAN expression .) ]
+  ! IN              [ reduce using rule 21 (expression -> expression GREATERTHAN expression .) ]
+  ! CON             [ reduce using rule 21 (expression -> expression GREATERTHAN expression .) ]
+  ! LBRACKET        [ reduce using rule 21 (expression -> expression GREATERTHAN expression .) ]
+  ! LESSTHAN        [ shift and go to state 27 ]
+  ! LESSTHANEQ      [ shift and go to state 28 ]
+  ! EQUAL           [ shift and go to state 29 ]
+  ! NOTEQ           [ shift and go to state 30 ]
+  ! GREATERTHAN     [ shift and go to state 31 ]
+  ! GREATERTHANEQ   [ shift and go to state 32 ]
+  ! OR              [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+
+
+state 58
+
+    (22) expression -> expression GREATERTHANEQ expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    SEMI            reduce using rule 22 (expression -> expression GREATERTHANEQ expression .)
+    LESSTHAN        reduce using rule 22 (expression -> expression GREATERTHANEQ expression .)
+    LESSTHANEQ      reduce using rule 22 (expression -> expression GREATERTHANEQ expression .)
+    EQUAL           reduce using rule 22 (expression -> expression GREATERTHANEQ expression .)
+    NOTEQ           reduce using rule 22 (expression -> expression GREATERTHANEQ expression .)
+    GREATERTHAN     reduce using rule 22 (expression -> expression GREATERTHANEQ expression .)
+    GREATERTHANEQ   reduce using rule 22 (expression -> expression GREATERTHANEQ expression .)
+    OR              reduce using rule 22 (expression -> expression GREATERTHANEQ expression .)
+    AND             reduce using rule 22 (expression -> expression GREATERTHANEQ expression .)
+    RPAREN          reduce using rule 22 (expression -> expression GREATERTHANEQ expression .)
+    COMMA           reduce using rule 22 (expression -> expression GREATERTHANEQ expression .)
+    RBRACKET        reduce using rule 22 (expression -> expression GREATERTHANEQ expression .)
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+    TIMES           shift and go to state 20
+    DIVIDE          shift and go to state 21
+    DIV             shift and go to state 22
+    MOD             shift and go to state 23
+    POW             shift and go to state 24
+    IN              shift and go to state 25
+    CON             shift and go to state 26
+    LBRACKET        shift and go to state 35
+
+  ! PLUS            [ reduce using rule 22 (expression -> expression GREATERTHANEQ expression .) ]
+  ! MINUS           [ reduce using rule 22 (expression -> expression GREATERTHANEQ expression .) ]
+  ! TIMES           [ reduce using rule 22 (expression -> expression GREATERTHANEQ expression .) ]
+  ! DIVIDE          [ reduce using rule 22 (expression -> expression GREATERTHANEQ expression .) ]
+  ! DIV             [ reduce using rule 22 (expression -> expression GREATERTHANEQ expression .) ]
+  ! MOD             [ reduce using rule 22 (expression -> expression GREATERTHANEQ expression .) ]
+  ! POW             [ reduce using rule 22 (expression -> expression GREATERTHANEQ expression .) ]
+  ! IN              [ reduce using rule 22 (expression -> expression GREATERTHANEQ expression .) ]
+  ! CON             [ reduce using rule 22 (expression -> expression GREATERTHANEQ expression .) ]
+  ! LBRACKET        [ reduce using rule 22 (expression -> expression GREATERTHANEQ expression .) ]
+  ! LESSTHAN        [ shift and go to state 27 ]
+  ! LESSTHANEQ      [ shift and go to state 28 ]
+  ! EQUAL           [ shift and go to state 29 ]
+  ! NOTEQ           [ shift and go to state 30 ]
+  ! GREATERTHAN     [ shift and go to state 31 ]
+  ! GREATERTHANEQ   [ shift and go to state 32 ]
+  ! OR              [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+
+
+state 59
+
+    (23) expression -> expression OR expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    SEMI            reduce using rule 23 (expression -> expression OR expression .)
+    OR              reduce using rule 23 (expression -> expression OR expression .)
+    RPAREN          reduce using rule 23 (expression -> expression OR expression .)
+    COMMA           reduce using rule 23 (expression -> expression OR expression .)
+    RBRACKET        reduce using rule 23 (expression -> expression OR expression .)
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+    TIMES           shift and go to state 20
+    DIVIDE          shift and go to state 21
+    DIV             shift and go to state 22
+    MOD             shift and go to state 23
+    POW             shift and go to state 24
+    IN              shift and go to state 25
+    CON             shift and go to state 26
+    LESSTHAN        shift and go to state 27
+    LESSTHANEQ      shift and go to state 28
+    EQUAL           shift and go to state 29
+    NOTEQ           shift and go to state 30
+    GREATERTHAN     shift and go to state 31
+    GREATERTHANEQ   shift and go to state 32
+    AND             shift and go to state 34
+    LBRACKET        shift and go to state 35
+
+  ! PLUS            [ reduce using rule 23 (expression -> expression OR expression .) ]
+  ! MINUS           [ reduce using rule 23 (expression -> expression OR expression .) ]
+  ! TIMES           [ reduce using rule 23 (expression -> expression OR expression .) ]
+  ! DIVIDE          [ reduce using rule 23 (expression -> expression OR expression .) ]
+  ! DIV             [ reduce using rule 23 (expression -> expression OR expression .) ]
+  ! MOD             [ reduce using rule 23 (expression -> expression OR expression .) ]
+  ! POW             [ reduce using rule 23 (expression -> expression OR expression .) ]
+  ! IN              [ reduce using rule 23 (expression -> expression OR expression .) ]
+  ! CON             [ reduce using rule 23 (expression -> expression OR expression .) ]
+  ! LESSTHAN        [ reduce using rule 23 (expression -> expression OR expression .) ]
+  ! LESSTHANEQ      [ reduce using rule 23 (expression -> expression OR expression .) ]
+  ! EQUAL           [ reduce using rule 23 (expression -> expression OR expression .) ]
+  ! NOTEQ           [ reduce using rule 23 (expression -> expression OR expression .) ]
+  ! GREATERTHAN     [ reduce using rule 23 (expression -> expression OR expression .) ]
+  ! GREATERTHANEQ   [ reduce using rule 23 (expression -> expression OR expression .) ]
+  ! AND             [ reduce using rule 23 (expression -> expression OR expression .) ]
+  ! LBRACKET        [ reduce using rule 23 (expression -> expression OR expression .) ]
+  ! OR              [ shift and go to state 33 ]
+
+
+state 60
+
+    (24) expression -> expression AND expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    SEMI            reduce using rule 24 (expression -> expression AND expression .)
+    OR              reduce using rule 24 (expression -> expression AND expression .)
+    AND             reduce using rule 24 (expression -> expression AND expression .)
+    RPAREN          reduce using rule 24 (expression -> expression AND expression .)
+    COMMA           reduce using rule 24 (expression -> expression AND expression .)
+    RBRACKET        reduce using rule 24 (expression -> expression AND expression .)
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+    TIMES           shift and go to state 20
+    DIVIDE          shift and go to state 21
+    DIV             shift and go to state 22
+    MOD             shift and go to state 23
+    POW             shift and go to state 24
+    IN              shift and go to state 25
+    CON             shift and go to state 26
+    LESSTHAN        shift and go to state 27
+    LESSTHANEQ      shift and go to state 28
+    EQUAL           shift and go to state 29
+    NOTEQ           shift and go to state 30
+    GREATERTHAN     shift and go to state 31
+    GREATERTHANEQ   shift and go to state 32
+    LBRACKET        shift and go to state 35
+
+  ! PLUS            [ reduce using rule 24 (expression -> expression AND expression .) ]
+  ! MINUS           [ reduce using rule 24 (expression -> expression AND expression .) ]
+  ! TIMES           [ reduce using rule 24 (expression -> expression AND expression .) ]
+  ! DIVIDE          [ reduce using rule 24 (expression -> expression AND expression .) ]
+  ! DIV             [ reduce using rule 24 (expression -> expression AND expression .) ]
+  ! MOD             [ reduce using rule 24 (expression -> expression AND expression .) ]
+  ! POW             [ reduce using rule 24 (expression -> expression AND expression .) ]
+  ! IN              [ reduce using rule 24 (expression -> expression AND expression .) ]
+  ! CON             [ reduce using rule 24 (expression -> expression AND expression .) ]
+  ! LESSTHAN        [ reduce using rule 24 (expression -> expression AND expression .) ]
+  ! LESSTHANEQ      [ reduce using rule 24 (expression -> expression AND expression .) ]
+  ! EQUAL           [ reduce using rule 24 (expression -> expression AND expression .) ]
+  ! NOTEQ           [ reduce using rule 24 (expression -> expression AND expression .) ]
+  ! GREATERTHAN     [ reduce using rule 24 (expression -> expression AND expression .) ]
+  ! GREATERTHANEQ   [ reduce using rule 24 (expression -> expression AND expression .) ]
+  ! LBRACKET        [ reduce using rule 24 (expression -> expression AND expression .) ]
+  ! OR              [ shift and go to state 33 ]
+  ! AND             [ shift and go to state 34 ]
+
+
+state 61
+
+    (25) index -> expression LBRACKET expression . RBRACKET
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    RBRACKET        shift and go to state 70
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+    TIMES           shift and go to state 20
+    DIVIDE          shift and go to state 21
+    DIV             shift and go to state 22
+    MOD             shift and go to state 23
+    POW             shift and go to state 24
+    IN              shift and go to state 25
+    CON             shift and go to state 26
+    LESSTHAN        shift and go to state 27
+    LESSTHANEQ      shift and go to state 28
+    EQUAL           shift and go to state 29
+    NOTEQ           shift and go to state 30
+    GREATERTHAN     shift and go to state 31
+    GREATERTHANEQ   shift and go to state 32
+    OR              shift and go to state 33
+    AND             shift and go to state 34
+    LBRACKET        shift and go to state 35
+
+
+state 62
+
+    (35) expression -> LPAREN expression RPAREN .
+
+    SEMI            reduce using rule 35 (expression -> LPAREN expression RPAREN .)
+    PLUS            reduce using rule 35 (expression -> LPAREN expression RPAREN .)
+    MINUS           reduce using rule 35 (expression -> LPAREN expression RPAREN .)
+    TIMES           reduce using rule 35 (expression -> LPAREN expression RPAREN .)
+    DIVIDE          reduce using rule 35 (expression -> LPAREN expression RPAREN .)
+    DIV             reduce using rule 35 (expression -> LPAREN expression RPAREN .)
+    MOD             reduce using rule 35 (expression -> LPAREN expression RPAREN .)
+    POW             reduce using rule 35 (expression -> LPAREN expression RPAREN .)
+    IN              reduce using rule 35 (expression -> LPAREN expression RPAREN .)
+    CON             reduce using rule 35 (expression -> LPAREN expression RPAREN .)
+    LESSTHAN        reduce using rule 35 (expression -> LPAREN expression RPAREN .)
+    LESSTHANEQ      reduce using rule 35 (expression -> LPAREN expression RPAREN .)
+    EQUAL           reduce using rule 35 (expression -> LPAREN expression RPAREN .)
+    NOTEQ           reduce using rule 35 (expression -> LPAREN expression RPAREN .)
+    GREATERTHAN     reduce using rule 35 (expression -> LPAREN expression RPAREN .)
+    GREATERTHANEQ   reduce using rule 35 (expression -> LPAREN expression RPAREN .)
+    OR              reduce using rule 35 (expression -> LPAREN expression RPAREN .)
+    AND             reduce using rule 35 (expression -> LPAREN expression RPAREN .)
+    LBRACKET        reduce using rule 35 (expression -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 35 (expression -> LPAREN expression RPAREN .)
+    COMMA           reduce using rule 35 (expression -> LPAREN expression RPAREN .)
+    RBRACKET        reduce using rule 35 (expression -> LPAREN expression RPAREN .)
+
+
+state 63
+
+    (6) in_tuple -> expression COMMA . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
+
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    expression                     shift and go to state 71
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 64
+
+    (5) tuple -> LPAREN in_tuple RPAREN .
+
+    SEMI            reduce using rule 5 (tuple -> LPAREN in_tuple RPAREN .)
+    PLUS            reduce using rule 5 (tuple -> LPAREN in_tuple RPAREN .)
+    MINUS           reduce using rule 5 (tuple -> LPAREN in_tuple RPAREN .)
+    TIMES           reduce using rule 5 (tuple -> LPAREN in_tuple RPAREN .)
+    DIVIDE          reduce using rule 5 (tuple -> LPAREN in_tuple RPAREN .)
+    DIV             reduce using rule 5 (tuple -> LPAREN in_tuple RPAREN .)
+    MOD             reduce using rule 5 (tuple -> LPAREN in_tuple RPAREN .)
+    POW             reduce using rule 5 (tuple -> LPAREN in_tuple RPAREN .)
+    IN              reduce using rule 5 (tuple -> LPAREN in_tuple RPAREN .)
+    CON             reduce using rule 5 (tuple -> LPAREN in_tuple RPAREN .)
+    LESSTHAN        reduce using rule 5 (tuple -> LPAREN in_tuple RPAREN .)
+    LESSTHANEQ      reduce using rule 5 (tuple -> LPAREN in_tuple RPAREN .)
+    EQUAL           reduce using rule 5 (tuple -> LPAREN in_tuple RPAREN .)
+    NOTEQ           reduce using rule 5 (tuple -> LPAREN in_tuple RPAREN .)
+    GREATERTHAN     reduce using rule 5 (tuple -> LPAREN in_tuple RPAREN .)
+    GREATERTHANEQ   reduce using rule 5 (tuple -> LPAREN in_tuple RPAREN .)
+    OR              reduce using rule 5 (tuple -> LPAREN in_tuple RPAREN .)
+    AND             reduce using rule 5 (tuple -> LPAREN in_tuple RPAREN .)
+    LBRACKET        reduce using rule 5 (tuple -> LPAREN in_tuple RPAREN .)
+    RPAREN          reduce using rule 5 (tuple -> LPAREN in_tuple RPAREN .)
+    COMMA           reduce using rule 5 (tuple -> LPAREN in_tuple RPAREN .)
+    RBRACKET        reduce using rule 5 (tuple -> LPAREN in_tuple RPAREN .)
+
+
+state 65
+
+    (7) in_tuple -> in_tuple COMMA . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
+
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    expression                     shift and go to state 72
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 66
+
+    (2) list -> LBRACKET in_list RBRACKET .
+
+    SEMI            reduce using rule 2 (list -> LBRACKET in_list RBRACKET .)
+    PLUS            reduce using rule 2 (list -> LBRACKET in_list RBRACKET .)
+    MINUS           reduce using rule 2 (list -> LBRACKET in_list RBRACKET .)
+    TIMES           reduce using rule 2 (list -> LBRACKET in_list RBRACKET .)
+    DIVIDE          reduce using rule 2 (list -> LBRACKET in_list RBRACKET .)
+    DIV             reduce using rule 2 (list -> LBRACKET in_list RBRACKET .)
+    MOD             reduce using rule 2 (list -> LBRACKET in_list RBRACKET .)
+    POW             reduce using rule 2 (list -> LBRACKET in_list RBRACKET .)
+    IN              reduce using rule 2 (list -> LBRACKET in_list RBRACKET .)
+    CON             reduce using rule 2 (list -> LBRACKET in_list RBRACKET .)
+    LESSTHAN        reduce using rule 2 (list -> LBRACKET in_list RBRACKET .)
+    LESSTHANEQ      reduce using rule 2 (list -> LBRACKET in_list RBRACKET .)
+    EQUAL           reduce using rule 2 (list -> LBRACKET in_list RBRACKET .)
+    NOTEQ           reduce using rule 2 (list -> LBRACKET in_list RBRACKET .)
+    GREATERTHAN     reduce using rule 2 (list -> LBRACKET in_list RBRACKET .)
+    GREATERTHANEQ   reduce using rule 2 (list -> LBRACKET in_list RBRACKET .)
+    OR              reduce using rule 2 (list -> LBRACKET in_list RBRACKET .)
+    AND             reduce using rule 2 (list -> LBRACKET in_list RBRACKET .)
+    LBRACKET        reduce using rule 2 (list -> LBRACKET in_list RBRACKET .)
+    RPAREN          reduce using rule 2 (list -> LBRACKET in_list RBRACKET .)
+    COMMA           reduce using rule 2 (list -> LBRACKET in_list RBRACKET .)
+    RBRACKET        reduce using rule 2 (list -> LBRACKET in_list RBRACKET .)
+
+
+state 67
+
+    (4) in_list -> in_list COMMA . expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
+
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    expression                     shift and go to state 73
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 68
+
+    (26) hash -> HASH NUMBER tuple .
+
+    SEMI            reduce using rule 26 (hash -> HASH NUMBER tuple .)
+    PLUS            reduce using rule 26 (hash -> HASH NUMBER tuple .)
+    MINUS           reduce using rule 26 (hash -> HASH NUMBER tuple .)
+    TIMES           reduce using rule 26 (hash -> HASH NUMBER tuple .)
+    DIVIDE          reduce using rule 26 (hash -> HASH NUMBER tuple .)
+    DIV             reduce using rule 26 (hash -> HASH NUMBER tuple .)
+    MOD             reduce using rule 26 (hash -> HASH NUMBER tuple .)
+    POW             reduce using rule 26 (hash -> HASH NUMBER tuple .)
+    IN              reduce using rule 26 (hash -> HASH NUMBER tuple .)
+    CON             reduce using rule 26 (hash -> HASH NUMBER tuple .)
+    LESSTHAN        reduce using rule 26 (hash -> HASH NUMBER tuple .)
+    LESSTHANEQ      reduce using rule 26 (hash -> HASH NUMBER tuple .)
+    EQUAL           reduce using rule 26 (hash -> HASH NUMBER tuple .)
+    NOTEQ           reduce using rule 26 (hash -> HASH NUMBER tuple .)
+    GREATERTHAN     reduce using rule 26 (hash -> HASH NUMBER tuple .)
+    GREATERTHANEQ   reduce using rule 26 (hash -> HASH NUMBER tuple .)
+    OR              reduce using rule 26 (hash -> HASH NUMBER tuple .)
+    AND             reduce using rule 26 (hash -> HASH NUMBER tuple .)
+    LBRACKET        reduce using rule 26 (hash -> HASH NUMBER tuple .)
+    RPAREN          reduce using rule 26 (hash -> HASH NUMBER tuple .)
+    COMMA           reduce using rule 26 (hash -> HASH NUMBER tuple .)
+    RBRACKET        reduce using rule 26 (hash -> HASH NUMBER tuple .)
+
+
+state 69
+
+    (5) tuple -> LPAREN . in_tuple RPAREN
+    (6) in_tuple -> . expression COMMA expression
+    (7) in_tuple -> . in_tuple COMMA expression
+    (8) expression -> . expression PLUS expression
+    (9) expression -> . expression MINUS expression
+    (10) expression -> . expression TIMES expression
+    (11) expression -> . expression DIVIDE expression
+    (12) expression -> . expression DIV expression
+    (13) expression -> . expression MOD expression
+    (14) expression -> . expression POW expression
+    (15) expression -> . expression IN expression
+    (16) expression -> . expression CON expression
+    (17) expression -> . expression LESSTHAN expression
+    (18) expression -> . expression LESSTHANEQ expression
+    (19) expression -> . expression EQUAL expression
+    (20) expression -> . expression NOTEQ expression
+    (21) expression -> . expression GREATERTHAN expression
+    (22) expression -> . expression GREATERTHANEQ expression
+    (23) expression -> . expression OR expression
+    (24) expression -> . expression AND expression
+    (27) expression -> . NUMBER
+    (28) expression -> . STR
+    (29) expression -> . list
+    (30) expression -> . TRUE
+    (31) expression -> . FALSE
+    (32) expression -> . index
+    (33) expression -> . tuple
+    (34) expression -> . hash
+    (35) expression -> . LPAREN expression RPAREN
+    (36) expression -> . MINUS expression
+    (37) expression -> . PLUS expression
+    (38) expression -> . NOT expression
+    (2) list -> . LBRACKET in_list RBRACKET
+    (25) index -> . expression LBRACKET expression RBRACKET
+    (5) tuple -> . LPAREN in_tuple RPAREN
+    (26) hash -> . HASH NUMBER tuple
+
+    NUMBER          shift and go to state 5
+    STR             shift and go to state 6
+    TRUE            shift and go to state 8
+    FALSE           shift and go to state 9
+    LPAREN          shift and go to state 13
+    MINUS           shift and go to state 4
+    PLUS            shift and go to state 3
+    NOT             shift and go to state 14
+    LBRACKET        shift and go to state 15
+    HASH            shift and go to state 16
+
+    in_tuple                       shift and go to state 39
+    expression                     shift and go to state 74
+    list                           shift and go to state 7
+    index                          shift and go to state 10
+    tuple                          shift and go to state 11
+    hash                           shift and go to state 12
+
+state 70
+
+    (25) index -> expression LBRACKET expression RBRACKET .
+
+    SEMI            reduce using rule 25 (index -> expression LBRACKET expression RBRACKET .)
+    PLUS            reduce using rule 25 (index -> expression LBRACKET expression RBRACKET .)
+    MINUS           reduce using rule 25 (index -> expression LBRACKET expression RBRACKET .)
+    TIMES           reduce using rule 25 (index -> expression LBRACKET expression RBRACKET .)
+    DIVIDE          reduce using rule 25 (index -> expression LBRACKET expression RBRACKET .)
+    DIV             reduce using rule 25 (index -> expression LBRACKET expression RBRACKET .)
+    MOD             reduce using rule 25 (index -> expression LBRACKET expression RBRACKET .)
+    POW             reduce using rule 25 (index -> expression LBRACKET expression RBRACKET .)
+    IN              reduce using rule 25 (index -> expression LBRACKET expression RBRACKET .)
+    CON             reduce using rule 25 (index -> expression LBRACKET expression RBRACKET .)
+    LESSTHAN        reduce using rule 25 (index -> expression LBRACKET expression RBRACKET .)
+    LESSTHANEQ      reduce using rule 25 (index -> expression LBRACKET expression RBRACKET .)
+    EQUAL           reduce using rule 25 (index -> expression LBRACKET expression RBRACKET .)
+    NOTEQ           reduce using rule 25 (index -> expression LBRACKET expression RBRACKET .)
+    GREATERTHAN     reduce using rule 25 (index -> expression LBRACKET expression RBRACKET .)
+    GREATERTHANEQ   reduce using rule 25 (index -> expression LBRACKET expression RBRACKET .)
+    OR              reduce using rule 25 (index -> expression LBRACKET expression RBRACKET .)
+    AND             reduce using rule 25 (index -> expression LBRACKET expression RBRACKET .)
+    LBRACKET        reduce using rule 25 (index -> expression LBRACKET expression RBRACKET .)
+    RPAREN          reduce using rule 25 (index -> expression LBRACKET expression RBRACKET .)
+    COMMA           reduce using rule 25 (index -> expression LBRACKET expression RBRACKET .)
+    RBRACKET        reduce using rule 25 (index -> expression LBRACKET expression RBRACKET .)
+
+
+state 71
+
+    (6) in_tuple -> expression COMMA expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    RPAREN          reduce using rule 6 (in_tuple -> expression COMMA expression .)
+    COMMA           reduce using rule 6 (in_tuple -> expression COMMA expression .)
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+    TIMES           shift and go to state 20
+    DIVIDE          shift and go to state 21
+    DIV             shift and go to state 22
+    MOD             shift and go to state 23
+    POW             shift and go to state 24
+    IN              shift and go to state 25
+    CON             shift and go to state 26
+    LESSTHAN        shift and go to state 27
+    LESSTHANEQ      shift and go to state 28
+    EQUAL           shift and go to state 29
+    NOTEQ           shift and go to state 30
+    GREATERTHAN     shift and go to state 31
+    GREATERTHANEQ   shift and go to state 32
+    OR              shift and go to state 33
+    AND             shift and go to state 34
+    LBRACKET        shift and go to state 35
+
+
+state 72
+
+    (7) in_tuple -> in_tuple COMMA expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    RPAREN          reduce using rule 7 (in_tuple -> in_tuple COMMA expression .)
+    COMMA           reduce using rule 7 (in_tuple -> in_tuple COMMA expression .)
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+    TIMES           shift and go to state 20
+    DIVIDE          shift and go to state 21
+    DIV             shift and go to state 22
+    MOD             shift and go to state 23
+    POW             shift and go to state 24
+    IN              shift and go to state 25
+    CON             shift and go to state 26
+    LESSTHAN        shift and go to state 27
+    LESSTHANEQ      shift and go to state 28
+    EQUAL           shift and go to state 29
+    NOTEQ           shift and go to state 30
+    GREATERTHAN     shift and go to state 31
+    GREATERTHANEQ   shift and go to state 32
+    OR              shift and go to state 33
+    AND             shift and go to state 34
+    LBRACKET        shift and go to state 35
+
+
+state 73
+
+    (4) in_list -> in_list COMMA expression .
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    RBRACKET        reduce using rule 4 (in_list -> in_list COMMA expression .)
+    COMMA           reduce using rule 4 (in_list -> in_list COMMA expression .)
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+    TIMES           shift and go to state 20
+    DIVIDE          shift and go to state 21
+    DIV             shift and go to state 22
+    MOD             shift and go to state 23
+    POW             shift and go to state 24
+    IN              shift and go to state 25
+    CON             shift and go to state 26
+    LESSTHAN        shift and go to state 27
+    LESSTHANEQ      shift and go to state 28
+    EQUAL           shift and go to state 29
+    NOTEQ           shift and go to state 30
+    GREATERTHAN     shift and go to state 31
+    GREATERTHANEQ   shift and go to state 32
+    OR              shift and go to state 33
+    AND             shift and go to state 34
+    LBRACKET        shift and go to state 35
+
+
+state 74
+
+    (6) in_tuple -> expression . COMMA expression
+    (8) expression -> expression . PLUS expression
+    (9) expression -> expression . MINUS expression
+    (10) expression -> expression . TIMES expression
+    (11) expression -> expression . DIVIDE expression
+    (12) expression -> expression . DIV expression
+    (13) expression -> expression . MOD expression
+    (14) expression -> expression . POW expression
+    (15) expression -> expression . IN expression
+    (16) expression -> expression . CON expression
+    (17) expression -> expression . LESSTHAN expression
+    (18) expression -> expression . LESSTHANEQ expression
+    (19) expression -> expression . EQUAL expression
+    (20) expression -> expression . NOTEQ expression
+    (21) expression -> expression . GREATERTHAN expression
+    (22) expression -> expression . GREATERTHANEQ expression
+    (23) expression -> expression . OR expression
+    (24) expression -> expression . AND expression
+    (25) index -> expression . LBRACKET expression RBRACKET
+
+    COMMA           shift and go to state 63
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+    TIMES           shift and go to state 20
+    DIVIDE          shift and go to state 21
+    DIV             shift and go to state 22
+    MOD             shift and go to state 23
+    POW             shift and go to state 24
+    IN              shift and go to state 25
+    CON             shift and go to state 26
+    LESSTHAN        shift and go to state 27
+    LESSTHANEQ      shift and go to state 28
+    EQUAL           shift and go to state 29
+    NOTEQ           shift and go to state 30
+    GREATERTHAN     shift and go to state 31
+    GREATERTHANEQ   shift and go to state 32
+    OR              shift and go to state 33
+    AND             shift and go to state 34
+    LBRACKET        shift and go to state 35
 
