@@ -117,7 +117,7 @@ class BopNode(Node):
             else:
                 raise SemanticError()
         elif (self.op == '**'):
-            if(isNumber(self.v1, self.v2) and self.v2.evaluate() != 0):
+            if(isNumber(self.v1, self.v2)):
                 return self.v1.evaluate() ** self.v2.evaluate()
             else:
                 raise SemanticError()
@@ -333,7 +333,7 @@ def t_error(t):
     
 # Build the lexer
 import ply.lex as lex
-lex.lex()
+lex.lex(debug=0)
 
 # Parsing rules
 precedence = (
@@ -368,9 +368,9 @@ def p_in_list(t):
     t[0] = ListNode(t[1])
 
 def p_in_list2(t):
-    '''in_list : expression COMMA in_list'''
-    t[3].v.insert(0, t[1])
-    t[0] = t[3]
+    '''in_list : in_list COMMA expression'''
+    t[1].v.append(t[3])
+    t[0] = t[1]
 
 def p_tuple(t):
     '''tuple : LPAREN in_tuple RPAREN'''
@@ -381,9 +381,9 @@ def p_in_tuple(t):
     t[0] = TupleNode(t[1], t[3])
 
 def p_in_tuple2(t):
-    '''in_tuple : expression COMMA in_tuple'''
-    t[3].v.insert(0, t[1])
-    t[0] = t[3]
+    '''in_tuple : in_tuple COMMA expression'''
+    t[1].v.append(t[3])
+    t[0] = t[1]
 
 # cluster**** of everything
 def p_expression_binop(t):
@@ -415,7 +415,7 @@ def p_expression_index(t):
     t[0] = IndexNode(t[1], t[3])
 
 def p_expression_hash(t):
-    '''hash : HASH NUMBER tuple '''
+    '''hash : HASH expression tuple '''
     t[0] = HashNode(t[3], t[2])
 
 def p_expression_factor(t):
@@ -444,7 +444,7 @@ def p_error(t):
     raise SyntaxError()
 
 import ply.yacc as yacc
-yacc.yacc()
+yacc.yacc(debug=0)
 
 import sys
 
