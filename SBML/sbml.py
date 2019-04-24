@@ -25,6 +25,14 @@ class Node:
     def execute(self):
         return 0
 
+class BlockNode(Node):
+    def __init__(self,sl):
+        self.statementList = sl
+
+    def evaluate(self):
+         for statement in self.statementList:
+             statement.evaluate()
+
 class NumberNode(Node):
     def __init__(self, v):
         if('.' in v or 'e' in v):
@@ -73,6 +81,12 @@ class BooleanNode(Node):
             self.v = False
     def evaluate(self):
         return self.v
+        
+class PrintNode(Node):
+    def __init__(self, e):
+        self.e = e
+    def evaluate(self):
+        print(self.e.evaluate())
 
 # # # # # #  #
 # operations #
@@ -241,7 +255,12 @@ def isList(v1, v2):
 def isBool(v1, v2):
     return (type(v1.evaluate()) == bool) and (type(v2.evaluate()) == bool)
 
-tokens = (
+reserved = {
+    'print' : 'PRINT'
+ }
+
+tokens = [
+    'NAME',
     # orelse
     'OR',   
     # andalso
@@ -250,6 +269,8 @@ tokens = (
     'NOT',
     # comparisons
     'LESSTHAN', 'LESSTHANEQ', 'EQUAL', 'NOTEQ', 'GREATERTHAN', 'GREATERTHANEQ',
+    # assign or = 
+    'ASSIGN',
     # con or concatenate aka ::
     'CON',
     # in
@@ -272,9 +293,10 @@ tokens = (
     'TRUE', 'FALSE',
     # string
     'STR'
-    )
+    ] + list(reserved.values())
 
-# t_PRINT    = 'print'
+t_NAME = r'[A-Za-z][A-Za-z0-9_]*'
+t_PRINT = r'print'
 t_OR = r'orelse'
 t_AND = r'andalso'
 t_NOT = r'not'
@@ -295,6 +317,7 @@ t_MOD = r'mod'
 t_POW = r'\*\*'
 t_LBRACKET = r'\['
 t_RBRACKET = r'\]'
+t_ASSIGN = r'='
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
 t_HASH = r'\#'
@@ -337,6 +360,7 @@ lex.lex(debug=0)
 
 # Parsing rules
 precedence = (
+    ('left', 'PRINT'),
     ('left', 'OR'),
     ('left', 'AND'),
     ('left', 'NOT'),
@@ -352,12 +376,12 @@ precedence = (
     ('left', 'LPAREN', 'RPAREN'),
     )
 
-def p_statement_expr(t):
-    'statement : expression SEMI'
-    if type(t[1].evaluate()) == str:
-        print("'" + t[1].evaluate() + "'")
-    else:
-        print(t[1].evaluate())
+# dictionary of names
+names = { }
+
+def p_print_smt(t):
+    '''print_smt : PRINT LPAREN expression RPAREN SEMI'''
+    t[0] = PrintNode(t[3])
 
 def p_list(t):
     '''list : LBRACKET in_list RBRACKET'''
@@ -385,6 +409,24 @@ def p_in_tuple2(t):
     t[1].v.append(t[3])
     t[0] = t[1]
 
+def p_block(p):
+    '''
+     block : L_CURLY statement_list R_CURLY
+    '''
+    p[0] = BlockNode(p[2])
+
+def p_statement_list(p):
+    '''
+     statement_list : statement_list statement 
+    '''
+    p[0] = p[1] + [p[2]]
+
+def p_statement_list_val(p):
+    '''
+    statement_list : statement
+    '''
+    p[0] = [p[1]]
+
 # cluster**** of everything
 def p_expression_binop(t):
     '''expression : expression PLUS expression
@@ -406,7 +448,7 @@ def p_expression_binop(t):
                   | expression GREATERTHANEQ expression
                   
                   | expression OR expression
-                  | expression AND expression'''        
+                  | expression AND expression'''
     t[0] = BopNode(t[2], t[1], t[3])
 
 
