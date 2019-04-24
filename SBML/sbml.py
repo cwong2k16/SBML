@@ -33,6 +33,13 @@ class BlockNode(Node):
          for statement in self.statementList:
              statement.evaluate()
 
+class NameNode(Node):
+    def __init__(self, v):
+        self.value = v
+
+    def evaluate(self):
+        return names[self.value]
+
 class NumberNode(Node):
     def __init__(self, v):
         if('.' in v or 'e' in v):
@@ -83,10 +90,10 @@ class BooleanNode(Node):
         return self.v
         
 class PrintNode(Node):
-    def __init__(self, e):
-        self.e = e
+    def __init__(self, v):
+        self.value = v
     def evaluate(self):
-        print(self.e.evaluate())
+        print(self.value.evaluate())
 
 # # # # # #  #
 # operations #
@@ -256,6 +263,7 @@ def isBool(v1, v2):
     return (type(v1.evaluate()) == bool) and (type(v2.evaluate()) == bool)
 
 reserved = {
+    # 'print' : 'PRINT'
     'print' : 'PRINT'
  }
 
@@ -292,10 +300,9 @@ tokens = [
     # boolean
     'TRUE', 'FALSE',
     # string
-    'STR'
+    'STR',
     ] + list(reserved.values())
 
-t_NAME = r'[A-Za-z][A-Za-z0-9_]*'
 t_PRINT = r'print'
 t_OR = r'orelse'
 t_AND = r'andalso'
@@ -323,6 +330,13 @@ t_RPAREN  = r'\)'
 t_HASH = r'\#'
 t_COMMA   = r','
 t_SEMI    = r';'
+
+def t_NAME(t):
+    r'[A-Za-z][A-Za-z0-9_]*'
+    t.type = reserved.get(t.value, 'ID')
+    t.value = NameNode(t.value)
+    return t
+
 
 def t_NUMBER(t):
     r'\d*([.][\d]+)?[e]([-+])?[\d]+ | \d*(\d\.|\.\d)\d* | \d+'
@@ -380,9 +394,9 @@ precedence = (
 names = { }
 
 def p_print_smt(t):
-    '''print_smt : PRINT LPAREN expression RPAREN SEMI'''
+    '''statement : PRINT LPAREN expression RPAREN SEMI %prec PRINT'''
     t[0] = PrintNode(t[3])
-
+    
 def p_list(t):
     '''list : LBRACKET in_list RBRACKET'''
     t[0] = t[2]
@@ -408,24 +422,6 @@ def p_in_tuple2(t):
     '''in_tuple : in_tuple COMMA expression'''
     t[1].v.append(t[3])
     t[0] = t[1]
-
-def p_block(p):
-    '''
-     block : L_CURLY statement_list R_CURLY
-    '''
-    p[0] = BlockNode(p[2])
-
-def p_statement_list(p):
-    '''
-     statement_list : statement_list statement 
-    '''
-    p[0] = p[1] + [p[2]]
-
-def p_statement_list_val(p):
-    '''
-    statement_list : statement
-    '''
-    p[0] = [p[1]]
 
 # cluster**** of everything
 def p_expression_binop(t):
@@ -502,7 +498,7 @@ for line in fd:
             token = lex.token()
             if not token: 
                 break
-        ast = yacc.parse(code)
+        ast = yacc.parse(code, debug=True).evaluate()
     except SemanticError:
         print("SEMANTIC ERROR")
     except SyntaxError:
