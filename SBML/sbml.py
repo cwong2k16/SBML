@@ -29,16 +29,9 @@ class BlockNode(Node):
     def __init__(self,sl):
         self.statementList = sl
 
-    def evaluate(self):
+    def execute(self):
          for statement in self.statementList:
-             statement.evaluate()
-
-class NameNode(Node):
-    def __init__(self, v):
-        self.value = v
-
-    def evaluate(self):
-        return names[self.value]
+             statement.execute()
 
 class NumberNode(Node):
     def __init__(self, v):
@@ -88,12 +81,60 @@ class BooleanNode(Node):
             self.v = False
     def evaluate(self):
         return self.v
-        
+
+# statements
 class PrintNode(Node):
-    def __init__(self, v):
-        self.value = v
-    def evaluate(self):
-        print(self.value.evaluate())
+    def __init__(self, e):
+        self.e = e
+    def execute(self):
+        print(self.e.evaluate())
+
+class AssignNode(Node):
+    def __init__(self, name, e):
+        self.name = name
+        self.e = e
+
+    def execute(self):
+        names[self.name.value] = self.e.evaluate()
+
+class AssignNodeList(Node):
+    def __init__(self, node, e):
+        self.needle = node.needle
+        self.haystack = node.haystack
+        self.e = e
+
+    def execute(self):
+        needle = self.needle.evaluate()
+        haystack = self.haystack.evaluate()
+        haystack[needle] = self.e.evaluate()
+
+class IfNode(Node):
+    def __init__(self, cond, block):
+        self.cond = cond
+        self.block = block
+
+    def execute(self):
+        if(self.cond.evaluate()):
+            self.block.execute()
+
+class ElseNode(Node):
+    def __init__(self, ifsmt, elseb):
+        self.cond = ifsmt.cond
+        self.ifb = ifsmt.block
+        self.elseb = elseb
+    def execute(self):
+        if(self.cond.evaluate()):
+            self.ifb.execute()
+        else:
+            self.elseb.execute()
+
+class WhileNode(Node):
+    def __init__(self, exp, block):
+        self.exp = exp
+        self.block = block
+    def execute(self):
+        while(self.exp.evaluate()):
+            self.block.execute()
 
 # # # # # #  #
 # operations #
@@ -127,24 +168,9 @@ class BopNode(Node):
             else:
                 raise SemanticError()
             return self.v1.evaluate() / self.v2.evaluate()
-        elif (self.op == 'div'):
-            if(isNumber(self.v1, self.v2) and self.v2.evaluate() != 0):
-                return self.v1.evaluate() // self.v2.evaluate()
-            else:
-                raise SemanticError()
-        elif (self.op == 'mod'):
-            if(isNumber(self.v1, self.v2) and self.v2.evaluate() != 0):
-                return self.v1.evaluate() % self.v2.evaluate()
-            else:
-                raise SemanticError()
         elif (self.op == '**'):
             if(isNumber(self.v1, self.v2)):
                 return self.v1.evaluate() ** self.v2.evaluate()
-            else:
-                raise SemanticError()
-        elif (self.op == 'in'):
-            if(isString(self.v1, self.v2) or isinstance(self.v2.evaluate(), list)):
-                return self.v1.evaluate() in self.v2.evaluate()
             else:
                 raise SemanticError()
         elif (self.op == '::'):
@@ -188,16 +214,41 @@ class BopNode(Node):
                 return self.v1.evaluate() >= self.v2.evaluate()
             else:
                 raise SemanticError()
-        elif (self.op == 'orelse'):
+        elif (self.op.value == 'orelse'):
             if(isBool(self.v1, self.v2)):
                 return self.v1.evaluate() or self.v2.evaluate()
             else:
                 raise SemanticError()
-        elif (self.op == 'andalso'):
+        elif (self.op.value == 'andalso'):
             if(isBool(self.v1, self.v2)):
                 return self.v1.evaluate() and self.v2.evaluate()
             else:
                 raise SemanticError()
+        elif (self.op == 'div'):
+            if(isNumber(self.v1, self.v2) and self.v2.evaluate() != 0):
+                return self.v1.evaluate() // self.v2.evaluate()
+            else:
+                raise SemanticError()
+        elif (self.op.value == 'mod'):
+            if(isNumber(self.v1, self.v2) and self.v2.evaluate() != 0):
+                return self.v1.evaluate() % self.v2.evaluate()
+            else:
+                raise SemanticError()
+        elif (self.op.value == 'in'):
+            if(isString(self.v1, self.v2) or isinstance(self.v2.evaluate(), list)):
+                return self.v1.evaluate() in self.v2.evaluate()
+            else:
+                raise SemanticError()
+
+class NameNode(Node):
+    def __init__(self, v):
+        self.value = v
+
+    def evaluate(self):
+        try:
+            return names[self.value]
+        except:
+            raise SemanticError()
 
 class UNode(Node):
     def __init__(self, op, v1):
@@ -215,7 +266,7 @@ class UNode(Node):
                 return self.v1.evaluate()
             else:
                 raise SemanticError()
-        elif(self.op == 'not'):
+        elif(self.op.value == 'not'):
             if(type(self.v1.evaluate()) == bool):
                 return not self.v1.evaluate()
             else:
@@ -263,35 +314,37 @@ def isBool(v1, v2):
     return (type(v1.evaluate()) == bool) and (type(v2.evaluate()) == bool)
 
 reserved = {
-    # 'print' : 'PRINT'
-    'print' : 'PRINT'
+    'print' : 'PRINT',
+    'if' : 'IF',
+    'else' : 'ELSE',
+    'while' : 'WHILE',
+    'orelse' : 'OR',
+    'andalso' : 'AND',
+    'in' : 'IN',
+    'mod' : 'MOD',
+    'div' : 'DIV',
+    'not' : 'NOT'
  }
 
 tokens = [
+    # name
     'NAME',
-    # orelse
-    'OR',   
-    # andalso
-    'AND',
-    # not
-    'NOT',
     # comparisons
     'LESSTHAN', 'LESSTHANEQ', 'EQUAL', 'NOTEQ', 'GREATERTHAN', 'GREATERTHANEQ',
     # assign or = 
     'ASSIGN',
     # con or concatenate aka ::
     'CON',
-    # in
-    'IN',
     # +, -
     'PLUS','MINUS', 
     # *, /, div, mod
-    'TIMES','DIVIDE', 'DIV', 'MOD',
+    'TIMES','DIVIDE',
     # pow
     'POW',
     # brackets for indexing
     'LBRACKET', 'RBRACKET',
     'LPAREN', 'RPAREN', 
+    'L_CURLY', 'R_CURLY',
     # hash
     'HASH',
     'COMMA', 'SEMI',
@@ -300,13 +353,9 @@ tokens = [
     # boolean
     'TRUE', 'FALSE',
     # string
-    'STR',
+    'STR'
     ] + list(reserved.values())
 
-t_PRINT = r'print'
-t_OR = r'orelse'
-t_AND = r'andalso'
-t_NOT = r'not'
 t_LESSTHAN = r'<'
 t_LESSTHANEQ = r'<='
 t_EQUAL = r'=='
@@ -314,30 +363,22 @@ t_NOTEQ = r'<>'
 t_GREATERTHAN = r'>'
 t_GREATERTHANEQ = r'>='
 t_CON = r'::'
-t_IN = r'in'
 t_PLUS    = r'\+'
 t_MINUS   = r'-'
 t_TIMES   = r'\*'
 t_DIVIDE  = r'/'
-t_DIV = r'div'
-t_MOD = r'mod'
 t_POW = r'\*\*'
 t_LBRACKET = r'\['
 t_RBRACKET = r'\]'
+t_L_CURLY = r'\{'
+t_R_CURLY = r'\}'
 t_ASSIGN = r'='
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
 t_HASH = r'\#'
 t_COMMA   = r','
 t_SEMI    = r';'
-
-def t_NAME(t):
-    r'[A-Za-z][A-Za-z0-9_]*'
-    t.type = reserved.get(t.value, 'ID')
-    t.value = NameNode(t.value)
-    return t
-
-
+    
 def t_NUMBER(t):
     r'\d*([.][\d]+)?[e]([-+])?[\d]+ | \d*(\d\.|\.\d)\d* | \d+'
     try:
@@ -362,6 +403,12 @@ def t_STR(t):
     t.value = StringNode(t.value)
     return t
 
+def t_NAME(t):
+    r'[A-Za-z][A-Za-z0-9_]*'
+    t.type = reserved.get(t.value, 'NAME')
+    t.value = NameNode(t.value)
+    return t
+
 # Ignored characters
 t_ignore = " \t"
 
@@ -374,6 +421,7 @@ lex.lex(debug=0)
 
 # Parsing rules
 precedence = (
+    ('right', 'ASSIGN'),
     ('left', 'PRINT'),
     ('left', 'OR'),
     ('left', 'AND'),
@@ -393,9 +441,69 @@ precedence = (
 # dictionary of names
 names = { }
 
+def p_block(p):
+    '''
+     block : L_CURLY statement_list R_CURLY
+    '''
+    p[0] = BlockNode(p[2])
+
+def p_empty_block(p):
+    '''
+    block : L_CURLY R_CURLY
+    '''
+    p[0] = BlockNode([])
+
+def p_statement_list(p):
+    '''
+     statement_list : statement_list statement 
+    '''
+    p[0] = p[1] + [p[2]]
+
+def p_statement_list_val(p):
+    '''
+    statement_list : statement
+    '''
+    p[0] = [p[1]]
+
+def p_statement(t):
+    """
+    statement : print_smt
+              | assign_smt
+              | if_smt
+              | else_smt
+              | while_smt
+              | assign_smt_list
+              | single_block
+    """
+    t[0] = t[1]
+
+def p_statement_single_block(t):
+    '''single_block : block'''
+    t[0] = t[1]
+
 def p_print_smt(t):
-    '''statement : PRINT LPAREN expression RPAREN SEMI %prec PRINT'''
+    '''print_smt : PRINT LPAREN expression RPAREN SEMI %prec PRINT'''
     t[0] = PrintNode(t[3])
+
+def p_assign_smt(t):
+    '''assign_smt : NAME ASSIGN expression SEMI %prec ASSIGN'''
+    t[0] = AssignNode(t[1], t[3])
+
+def p_assign_list_smt(t):
+    '''assign_smt_list : index ASSIGN expression SEMI %prec ASSIGN'''
+    t[0] = AssignNodeList(t[1], t[3])
+
+def p_if_smt(t):
+    '''if_smt : IF LPAREN expression RPAREN block'''
+    t[0] = IfNode(t[3], t[5])
+
+def p_else_smt(t):
+    '''else_smt : if_smt ELSE block'''
+    t[0] = ElseNode(t[1], t[3])
+
+def p_while_smt(t):
+    '''while_smt : WHILE LPAREN expression RPAREN block'''
+    t[0] = WhileNode(t[3], t[5])
     
 def p_list(t):
     '''list : LBRACKET in_list RBRACKET'''
@@ -453,7 +561,7 @@ def p_expression_index(t):
     t[0] = IndexNode(t[1], t[3])
 
 def p_expression_hash(t):
-    '''hash : HASH expression tuple '''
+    '''hash : HASH expression expression '''
     t[0] = HashNode(t[3], t[2])
 
 def p_expression_factor(t):
@@ -465,6 +573,8 @@ def p_expression_factor(t):
                   | index
                   | tuple
                   | hash
+                  | NAME
+                  | assign_smt_list
                   '''
     t[0] = t[1]
 
@@ -488,18 +598,12 @@ import sys
 
 if (len(sys.argv) != 2):
     sys.exit("invalid arguments")
-fd = open(sys.argv[1], 'r')
-
-for line in fd:
-    code = line.strip()
-    try:
-        lex.input(code)
-        while True:
-            token = lex.token()
-            if not token: 
-                break
-        ast = yacc.parse(code, debug=True).evaluate()
-    except SemanticError:
-        print("SEMANTIC ERROR")
-    except SyntaxError:
-        print("SYNTAX ERROR")
+with open(sys.argv[1], 'r') as myfile:
+    data = myfile.read().replace('\n', '')
+try:
+    root = yacc.parse(data)
+    root.execute()
+except SemanticError:
+    print("SEMANTIC ERROR")
+except SyntaxError:
+    print("SYNTAX ERROR")
