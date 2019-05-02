@@ -250,6 +250,36 @@ class NameNode(Node):
         except:
             raise SemanticError()
 
+class FunctionNode(Node):
+    def __init__(self, params, block, e):
+        self.params = params
+        self.block = block
+        self.e = e
+
+    def execute(self):
+        self.block.execute()
+
+class FunctionCallNode(Node):
+    def __init__(self, name, args):
+        self.name = name
+        self.args = args
+    
+    def evaluate(self):
+        global names
+        old_vars = names
+        names = {}
+        global functions
+        func_node = functions[self.name]
+        new_vars = {}
+        for i in range(func_node.params):
+            new_vars[func_node.params[i]] = self.args[i].evaluate()
+        old_vars = names
+        names = new_vars
+        func_node.execute()
+        result = func_node.e.evaluate()
+        names = old_vars
+        return result
+
 class UNode(Node):
     def __init__(self, op, v1):
         self.v1 = v1
@@ -438,8 +468,11 @@ precedence = (
     ('left', 'LPAREN', 'RPAREN'),
     )
 
-# dictionary of names
+# dictionary of variable names
 names = { }
+
+# dictionary of function names
+functions = { }
 
 def p_block(p):
     '''
