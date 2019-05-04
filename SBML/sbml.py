@@ -63,7 +63,10 @@ class TupleNode(Node):
 
 class ListNode(Node):
     def __init__(self, v):
-        self.v = [v]
+        if(v == []):
+            self.v = v
+        else:
+            self.v = [v]
     def evaluate(self):
         lst = []
         for val in self.v:
@@ -230,7 +233,7 @@ class BopNode(Node):
                 return self.v1.evaluate() and self.v2.evaluate()
             else:
                 raise SemanticError()
-        elif (self.op == 'div'):
+        elif (self.op.value == 'div'):
             if(isNumber(self.v1, self.v2) and self.v2.evaluate() != 0):
                 return self.v1.evaluate() // self.v2.evaluate()
             else:
@@ -564,6 +567,7 @@ def p_statement(t):
               | while_smt
               | assign_smt_list
               | single_block
+              | function_call
     """
     t[0] = t[1]
 
@@ -598,6 +602,10 @@ def p_while_smt(t):
 def p_list(t):
     '''list : LBRACKET in_list RBRACKET'''
     t[0] = t[2]
+
+def p_empty_list(t):
+    '''list : LBRACKET RBRACKET'''
+    t[0] = ListNode([])
 
 def p_in_list(t):
     '''in_list : expression'''
