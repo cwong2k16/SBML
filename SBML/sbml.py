@@ -4,6 +4,12 @@ import inspect
 Christopher Wong 110410665
 '''
 
+# dictionary of variable names
+names = { }
+
+# dictionary of function names
+functions = { }
+
 # # # # # # # #
 # error types #
 # # # # # # # #
@@ -251,10 +257,12 @@ class NameNode(Node):
             raise SemanticError()
 
 class FunctionNode(Node):
-    def __init__(self, params, block, e):
+    def __init__(self, name, params, block, e):
+        self.name = name
         self.params = params
         self.block = block
         self.e = e
+        functions[self.name.value] = self
 
     def execute(self):
         self.block.execute()
@@ -267,12 +275,11 @@ class FunctionCallNode(Node):
     def evaluate(self):
         global names
         old_vars = names
-        names = {}
         global functions
-        func_node = functions[self.name]
+        func_node = functions[self.name.value]
         new_vars = {}
-        for i in range(func_node.params):
-            new_vars[func_node.params[i]] = self.args[i].evaluate()
+        for i in range(len(func_node.params)):
+            new_vars[func_node.params[i].value] = self.args[i].evaluate()
         old_vars = names
         names = new_vars
         func_node.execute()
@@ -353,7 +360,8 @@ reserved = {
     'in' : 'IN',
     'mod' : 'MOD',
     'div' : 'DIV',
-    'not' : 'NOT'
+    'not' : 'NOT',
+    'fun' : 'FUN'
  }
 
 tokens = [
@@ -468,11 +476,60 @@ precedence = (
     ('left', 'LPAREN', 'RPAREN'),
     )
 
-# dictionary of variable names
-names = { }
+# functions stuff, hw 5
+def p_program(p):
+    '''
+    program : functions block
+    '''
+    p[0] = p[2]
 
-# dictionary of function names
-functions = { }
+def p_functions(p):
+    '''
+    functions : functions function
+    '''
+    p[0] = p[1] + [p[2]]
+
+def p_inner_function(p):
+    '''
+    functions : function
+    '''
+    p[0] = [p[1]]
+
+def p_function(p):
+    '''
+    function : FUN NAME LPAREN params RPAREN ASSIGN block expression SEMI
+    '''
+    p[0] = FunctionNode(p[2], p[4], p[7], p[8])
+
+def p_params(p):
+    '''
+    params : params COMMA NAME
+    '''
+    p[0] = p[1] + [p[3]]
+
+def p_param(p):
+    '''
+    params : NAME
+    '''
+    p[0] = [p[1]]
+
+def p_function_call(p):
+    '''
+    function_call : NAME LPAREN args RPAREN
+    '''
+    p[0] = FunctionCallNode(p[1], p[3])
+
+def p_args(p):
+    '''
+    args : args COMMA expression
+    '''
+    p[0] = p[1] + [p[3]]
+
+def p_args2(p):
+    '''
+    args : expression
+    '''
+    p[0] = [p[1]]
 
 def p_block(p):
     '''
@@ -608,6 +665,7 @@ def p_expression_factor(t):
                   | hash
                   | NAME
                   | assign_smt_list
+                  | function_call
                   '''
     t[0] = t[1]
 
